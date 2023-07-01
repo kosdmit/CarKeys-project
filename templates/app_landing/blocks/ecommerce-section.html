@@ -1,0 +1,25 @@
+{% load static %}
+
+<section class="ecommerce-section py-5">
+  <div class="container py-lg-5 position-relative">
+    {% include 'elements/titles/secondary_title.html' with text='Каталог услуг' %}
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      {% include 'app_landing/elements/ecommerce-item.html' %}
+      {% include 'app_landing/elements/ecommerce-item.html' %}
+      {% include 'app_landing/elements/ecommerce-item.html' %}
+
+      {% include 'app_landing/elements/ecommerce-item.html' %}
+      {% include 'app_landing/elements/ecommerce-item.html' %}
+      {% include 'app_landing/elements/ecommerce-item.html' %}
+
+      {% include 'app_landing/elements/ecommerce-item.html' %}
+      {% include 'app_landing/elements/ecommerce-item.html' %}
+      {% include 'app_landing/elements/ecommerce-item.html' %}
+    </div>
+    <div class="pt-4 text-center">
+      {% include 'elements/buttons/primary_button.html' with ghost='True' text='Смотреть все' %}
+    </div>
+  </div>
+
+</section><!--//ecommerce-section-->

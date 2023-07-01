@@ -1,0 +1,29 @@
+{% load static %}
+
+<section id="quote" class="testimonial-section py-5">
+  <div class="py-lg-5">
+    {% include 'elements/titles/secondary_title.html' with text='Десятки довольных клиентов' %}
+
+    <div id="testimonial-carousel" class="testimonial-carousel">
+      {% include 'app_landing/elements/feedback_item.html' %}
+
+      {% include 'app_landing/elements/feedback_item.html' %}
+
+      {% include 'app_landing/elements/feedback_item.html' %}
+
+      {% include 'app_landing/elements/feedback_item.html' %}
+
+      {% include 'app_landing/elements/feedback_item.html' %}
+
+      {% include 'app_landing/elements/feedback_item.html' %}
+
+      {% include 'app_landing/elements/feedback_item.html' %}
+    </div><!--//testimonial-carousel-->
+
+    <div class="pt-5 text-center">
+      {% include 'elements/buttons/primary_button.html' with text='Оставить отзыв' %}
+    </div>
+
+  </div><!--//container-->
+
+</section><!--//testimonial-section-->

@@ -1,0 +1,6 @@
+<a class="btn  font-weight-bold theme-btn
+          {% if on_bg %}theme-btn-on-bg{% else %}btn-primary{% endif %}
+          {% if ghost %}theme-btn-ghost{% endif %}"
+   href="{{ link }}" {% if target %}target="{{ target }}"{% endif %}>
+  {{ text }}
+</a>

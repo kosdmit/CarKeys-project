@@ -1,0 +1,17 @@
+{% load static %}
+
+<section class="benefits-section py-5">
+
+  <div class="container py-lg-5">
+    {% include 'elements/titles/secondary_title.html' with text='Качественно и быстро решим вашу проблему' %}
+    <div class="row">
+      {% include 'app_landing/elements/benefits-item-content.html' with item_number='first' %}
+      {% include 'app_landing/elements/benefits-item-content.html' with item_number='second' %}
+      {% include 'app_landing/elements/benefits-item-content.html' with item_number='third' %}
+    </div><!--//row-->
+    <div class="pt-3 text-center">
+      {% include 'elements/buttons/primary_button.html' with ghost='True' text='Перейти к отзывам' %}
+    </div>
+  </div>
+
+</section><!--//benefits-section-->

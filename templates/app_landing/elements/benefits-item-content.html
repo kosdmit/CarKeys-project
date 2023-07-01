@@ -1,0 +1,29 @@
+{% extends 'app_landing/elements/benefits-item.html' %}
+{% load static %}
+
+{% block benefits-item-content %}
+
+  {% if item_number == 'first' %}
+    <img class="mb-3" src="{% static 'images/theme_images/icon-target.svg' %}" alt=""/>
+    <h5>Широкий спектр услуг</h5>
+    <div>Благодаря высокому уровню профессионализма и обширному опыту,
+      мы поможем решить самые сложные и нетипичные ситуации.
+    </div>
+
+  {% elif item_number == 'second' %}
+    <img class="mb-3" src="{% static 'images/theme_images/icon-rocket.svg' %}" alt=""/>
+    <h5>Быстрая и качественная помощь на месте</h5>
+    <div>Наши специалисты готовы приехать на место в любое удобное для вас время,
+      чтобы помочь вам восстановить ключи от вашего автомобиля.
+    </div>
+
+  {% elif item_number == 'third' %}
+    <img class="mb-3" src="{% static 'images/theme_images/icon-cogs.svg' %}" alt=""/>
+    <h5>Высокий уровень обслуживания</h5>
+    <div>Наша команда обладает необходимыми навыками и знаниями,
+      чтобы гарантировать безупречное выполнение всех работ,
+      независимо от их сложности и специфики.
+    </div>
+
+  {% endif %}
+{% endblock benefits-item-content %}
