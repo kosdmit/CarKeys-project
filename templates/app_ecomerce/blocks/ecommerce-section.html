@@ -1,10 +1,14 @@
 {% load static %}
 
-<section class="ecommerce-section py-5">
-  <div class="container py-lg-5 position-relative">
-    {% include 'elements/titles/secondary_title.html' with text='Каталог услуг' %}
+<section class="">
+  <div class="container position-relative">
+    {% include 'app_ecomerce/elements/nav-bar.html' %}
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      {% include 'app_landing/elements/ecommerce-item.html' %}
+      {% include 'app_landing/elements/ecommerce-item.html' %}
+      {% include 'app_landing/elements/ecommerce-item.html' %}
+
       {% include 'app_landing/elements/ecommerce-item.html' %}
       {% include 'app_landing/elements/ecommerce-item.html' %}
       {% include 'app_landing/elements/ecommerce-item.html' %}

@@ -1,0 +1,24 @@
+{% extends 'blocks/hero-section.html' %}
+
+{% block hero-section-content %}
+
+  {% if url_name == 'main' %}
+    <h2 class="site-headline font-weight-bold mt-lg-5">
+      Восстановим ключи для вашего автомобиля
+    </h2>
+    <div class="site-tagline mb-3">
+      Мы работаем по Самаре и области, с выездом на место работ. Узнайте есть ли нужная заготовка в наличии:
+    </div>
+
+  {% elif url_name == 'goods' %}
+    <h2 class="site-headline font-weight-bold mt-lg-5">
+      Большой ассортимент товаров и услуг
+    </h2>
+    <div class="site-tagline mb-3">
+      Если нужной заготовки не оказалось в наличии, закажем доставку у наших поставщиков. Узнайте стоимость сейчас:
+    </div>
+
+  {% endif %}
+{% endblock %}
+
+

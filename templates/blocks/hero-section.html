@@ -1,15 +1,8 @@
-{% load static %}
-
 <section class="hero-section">
   <div class="container">
     <div class="row figure-holder">
       <div class="col-12 col-md-6 pt-3 pt-md-4">
-        <h2 class="site-headline font-weight-bold mt-lg-5">
-          Восстановим ключи для вашего автомобиля
-        </h2>
-        <div class="site-tagline mb-3">
-          Мы работаем по Самаре и области, с выездом на место работ. Узнайте есть ли нужная заготовка в наличии:
-        </div>
+        {% block hero-section-content %}{% endblock %}
         <div class="cta-btns d-flex">
           <div class="mb-4 me-2">
             {% include 'elements/buttons/primary_button.html' with link='tel:+79966216227' text='+7(996)621-62-27' %}
