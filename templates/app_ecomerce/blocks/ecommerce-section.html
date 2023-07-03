@@ -5,24 +5,12 @@
     {% include 'app_ecomerce/elements/nav-bar.html' %}
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      {% include 'app_landing/elements/ecommerce-item.html' %}
-      {% include 'app_landing/elements/ecommerce-item.html' %}
-      {% include 'app_landing/elements/ecommerce-item.html' %}
-
-      {% include 'app_landing/elements/ecommerce-item.html' %}
-      {% include 'app_landing/elements/ecommerce-item.html' %}
-      {% include 'app_landing/elements/ecommerce-item.html' %}
-
-      {% include 'app_landing/elements/ecommerce-item.html' %}
-      {% include 'app_landing/elements/ecommerce-item.html' %}
-      {% include 'app_landing/elements/ecommerce-item.html' %}
-
-      {% include 'app_landing/elements/ecommerce-item.html' %}
-      {% include 'app_landing/elements/ecommerce-item.html' %}
-      {% include 'app_landing/elements/ecommerce-item.html' %}
+      {% for goods in page_obj %}
+        {% include 'app_landing/elements/ecommerce-item.html' %}
+      {% endfor %}
     </div>
     <div class="pt-4 text-center">
-      {% include 'elements/buttons/primary_button.html' with ghost='True' text='Смотреть все' link=goods_link %}
+      {% include 'elements/pagination.html' %}
     </div>
   </div>
 

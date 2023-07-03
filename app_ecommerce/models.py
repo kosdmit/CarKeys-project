@@ -2,6 +2,11 @@ import uuid
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_delete
+
+from app_ecommerce.models_mixins import CompressImageBeforeSaveMixin
+
 
 # Create your models here.
 class Base(models.Model):
@@ -22,16 +27,26 @@ class Base(models.Model):
         return str
 
 
-class Goods(Base):
+class Goods(CompressImageBeforeSaveMixin, Base):
+    def __init__(self, *args, **kwargs):
+        self.image_width = 642
+        self.image_name_suffix = 'goods_image'
+        super().__init__(*args, **kwargs)
+
     title = models.CharField(max_length=150)
     parent = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField()
+    image = models.ImageField(upload_to='images/goods_images/', blank=True, null=True)
     price = models.IntegerField()
     count = models.IntegerField()
     is_active = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'goods'
+
+@receiver(post_delete, sender=Goods)
+def submission_delete(sender, instance, **kwargs):
+    instance.image.delete(save=False)
 
 
 class Category(Base):

@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 
+from app_ecommerce.models import Goods
+
 
 # Create your views here.
 class MainView(TemplateView):
@@ -11,6 +13,8 @@ class MainView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         context['goods_link'] = reverse_lazy('goods')
+        goods_list = Goods.objects.all()[:3]
+        context['goods_list'] = goods_list
 
         return context
 
