@@ -1,0 +1,30 @@
+{% extends 'elements/offcanvas.html' %}
+
+{% block title %}Категории{% endblock %}
+
+{% block content %}
+
+<div class="accordion accordion-flush" id="accordionPanelsStayOpenExample">
+  {% for category in top_level_categories %}
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-body-{{ category.pk }}" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+          <a class="link-primary" href="{% url 'goods' %}?category={{ category.slug }}">{{ category.title }}</a>
+        </button>
+      </h2>
+      <div id="accordion-body-{{ category.pk }}" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          <ul>
+            {% for category in category.category_set.all %}
+              <li>
+                <a class="link-secondary" href="{% url 'goods' %}?category={{ category.slug }}">{{ category.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

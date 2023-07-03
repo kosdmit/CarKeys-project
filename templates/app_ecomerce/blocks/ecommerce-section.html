@@ -4,6 +4,8 @@
   <div class="container position-relative">
     {% include 'app_ecomerce/elements/nav-bar.html' %}
 
+    {% include 'app_ecomerce/elements/categories.html' %}
+
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
       {% for goods in page_obj %}
         {% include 'app_landing/elements/ecommerce-item.html' %}

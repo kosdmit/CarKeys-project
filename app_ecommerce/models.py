@@ -1,7 +1,10 @@
 import uuid
 
+from autoslug import AutoSlugField
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Q
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
 
@@ -34,6 +37,7 @@ class Goods(CompressImageBeforeSaveMixin, Base):
         super().__init__(*args, **kwargs)
 
     title = models.CharField(max_length=150)
+    slug = AutoSlugField(populate_from='title', unique=True)
     parent = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField()
     image = models.ImageField(upload_to='images/goods_images/', blank=True, null=True)
@@ -52,9 +56,25 @@ def submission_delete(sender, instance, **kwargs):
 class Category(Base):
     parent = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=150)
+    slug = AutoSlugField(populate_from='title', unique=True)
 
     class Meta:
         verbose_name_plural = 'categories'
+
+    def clean(self):
+        # checking parent category is a top level category
+        if self.parent and self.parent.parent:
+            raise ValidationError("Parent category must be a top level category.")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
+
+    def get_goods(self):
+        child_categories = Category.objects.filter(parent=self)
+        goods = Goods.objects.filter(Q(parent=self) | Q(parent__in=child_categories))
+
+        return goods
 
 
 class Parameter(Base):
