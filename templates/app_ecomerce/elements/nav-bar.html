@@ -4,12 +4,14 @@
       <button class="btn btn-outline-primary me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
         Категории
       </button>
-      <li class="breadcrumb-item">
-        <a class="link-body-emphasis fw-semibold text-decoration-none" href="#">Автоключи</a>
-      </li>
-      <li class="breadcrumb-item active" aria-current="page">
-        Toyota
-      </li>
+      {% for text, url in breadcrumbs %}
+        <li class="breadcrumb-item {% if not url %}active{% endif %}">
+          <a class="link-body-emphasis {% if  forloop.counter0 == 0%}fw-semibold{% endif %} text-decoration-none"
+             {% if url %}href="{{ url }}"{% endif %}>
+            {{ text }}
+          </a>
+        </li>
+      {% endfor %}
     </ol>
   </nav>
 </div>
