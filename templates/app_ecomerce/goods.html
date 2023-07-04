@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block content %}
-  {% include 'app_ecomerce/blocks/ecommerce-section.html' %}
+  {% include 'blocks/page-title.html' with text='Каталог'%}
+  {% include 'app_ecomerce/blocks/nav-bar.html' %}
+  {% include 'app_ecomerce/blocks/cards-list.html' %}
   {% include 'blocks/hero-section-content.html' with url_name='goods' %}
 {% endblock %}
 

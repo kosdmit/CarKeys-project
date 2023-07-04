@@ -1,9 +1,10 @@
-<div class="container my-4 p-0">
+<div class="container my-4">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-chevron p-3 theme-bg-primary rounded-3 align-items-center">
       <button class="btn btn-outline-primary me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
         Категории
       </button>
+      {% include 'app_ecomerce/elements/categories.html' %}
       {% for text, url in breadcrumbs %}
         <li class="breadcrumb-item {% if not url %}active{% endif %}">
           <a class="link-body-emphasis {% if  forloop.counter0 == 0%}fw-semibold{% endif %} text-decoration-none"

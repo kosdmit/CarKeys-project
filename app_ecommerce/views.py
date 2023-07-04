@@ -7,7 +7,7 @@ from app_ecommerce.models import Goods, Category
 
 
 # Create your views here.
-class GoodsView(ListView):
+class GoodsListView(ListView):
     template_name = 'app_ecomerce/goods.html'
     model = Goods
     paginate_by = 9

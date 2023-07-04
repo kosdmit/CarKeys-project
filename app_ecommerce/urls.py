@@ -17,9 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from app_ecommerce.views import GoodsView
+from app_ecommerce.views import GoodsListView
 from app_landing.views import MainView
 
 urlpatterns = [
-    path('', GoodsView.as_view(), name='goods'),
+    path('', GoodsListView.as_view(), name='goods'),
 ]
