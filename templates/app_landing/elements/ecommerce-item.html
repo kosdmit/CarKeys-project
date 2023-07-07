@@ -10,7 +10,10 @@
       <p class="card-text">{{ goods.description }}</p>
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
-          <button type="button" class="btn btn-sm btn-outline-secondary">Подробнее</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary"
+                  data-bs-toggle="modal" data-bs-target="#detail-view-modal-{{ goods.pk }}">
+            Подробнее
+          </button>
           <button type="button" class="btn btn-sm btn-secondary">Заказать</button>
         </div>
         <p class="text-secondary m-0">{{ goods.price }} ₽</p>

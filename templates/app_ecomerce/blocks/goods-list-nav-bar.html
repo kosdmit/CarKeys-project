@@ -1,0 +1,18 @@
+{% extends 'app_ecomerce/blocks/nav-bar-base.html' %}
+
+{% block content %}
+
+  <button class="btn btn-outline-primary me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
+    Категории
+  </button>
+  {% include 'app_ecomerce/elements/categories.html' %}
+  {% for text, url in breadcrumbs %}
+    <li class="breadcrumb-item {% if not url %}active{% endif %}">
+      <a class="link-body-emphasis {% if  forloop.counter0 == 0%}fw-semibold{% endif %} text-decoration-none"
+         {% if url %}href="{{ url }}"{% endif %}>
+        {{ text }}
+      </a>
+    </li>
+  {% endfor %}
+
+{% endblock %}

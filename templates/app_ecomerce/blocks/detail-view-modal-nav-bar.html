@@ -1,0 +1,22 @@
+{% extends 'app_ecomerce/blocks/nav-bar-base.html' %}
+
+{% block content %}
+
+  <p class="m-0 me-3">Категория:</p>
+  {% if goods.parent.parent %}
+    <li class="breadcrumb-item">
+      <a class="link-body-emphasis fw-semibold text-decoration-none"
+         href="{% url 'goods' %}?category={{ goods.parent.parent.slug }}">
+        {{ goods.parent.parent.title }}
+      </a>
+    </li>
+  {% endif %}
+  <li class="breadcrumb-item">
+    <a class="link-body-emphasis {% if not goods.parent.parent %}fw-semibold{% endif %} text-decoration-none"
+       href="{% url 'goods' %}?category={{ goods.parent.slug }}">
+      {{ goods.parent.title }}
+    </a>
+  </li>
+
+
+{% endblock %}

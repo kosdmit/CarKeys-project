@@ -1,0 +1,23 @@
+<!-- Modal -->
+<div class="modal fade" id="detail-view-modal-{{ goods.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <img src="{{ goods.image.url }}" alt="goods image" class="rounded-top-2">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">{{ goods.title }}</h1>
+      </div>
+      <div class="modal-body">
+        <p>{{ goods.description }}</p>
+        {% if goods.parent %}
+          {% include 'app_ecomerce/blocks/detail-view-modal-nav-bar.html' %}
+        {% endif %}
+        ...
+      </div>
+      <div class="modal-footer">
+        <p class="display-6 me-auto">{{ goods.price }} ₽</p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <button type="button" class="btn btn-primary">Заказать</button>
+      </div>
+    </div>
+  </div>
+</div>
