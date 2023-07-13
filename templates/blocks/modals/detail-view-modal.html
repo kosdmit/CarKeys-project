@@ -8,15 +8,27 @@
       </div>
       <div class="modal-body">
         <p>{{ goods.description }}</p>
+        {% for param in goods.parameter_set.all %}
+          <div class="row">
+            <dt class="col-sm-6">{{ param.title }}</dt>
+            <dd class="col-sm-6">{{ param.value }}</dd>
+          </div>
+        {% endfor %}
         {% if goods.parent %}
           {% include 'app_ecomerce/blocks/detail-view-modal-nav-bar.html' %}
         {% endif %}
-        ...
       </div>
-      <div class="modal-footer">
-        <p class="display-6 me-auto">{{ goods.price }} ₽</p>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-        <button type="button" class="btn btn-primary">Заказать</button>
+      <div class="modal-footer d-block d-sm-flex">
+        <span class="fs-4">{{ goods.price }} ₽</span>
+        {% if goods.count > 0 %}
+          <span class="badge text-bg-primary rounded-pill me-auto text-white">В наличии</span>
+        {% else %}
+          <span class="badge text-bg-secondary rounded-pill me-auto text-white">Нет в наличии</span>
+        {% endif %}
+        <div class="d-flex justify-content-center">
+          <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Закрыть</button>
+          <button type="button" class="btn btn-primary">Заказать</button>
+        </div>
       </div>
     </div>
   </div>

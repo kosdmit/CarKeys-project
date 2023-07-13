@@ -54,6 +54,9 @@ class GoodsListView(ListView):
     def get_queryset(self):
         if self.category_object:
             query_set = self.category_object.get_goods()
+            query_set = query_set.filter(is_active=True)
             return query_set
         else:
-            return super().get_queryset()
+            query_set = super().get_queryset()
+            query_set = query_set.filter(is_active=True)
+            return query_set

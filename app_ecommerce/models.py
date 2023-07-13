@@ -78,7 +78,7 @@ class Category(Base):
 
 
 class Parameter(Base):
-    uuid_key = models.UUIDField()
+    goods = models.ForeignKey('Goods', on_delete=models.CASCADE)
 
     title = models.CharField(max_length=150)
     value = models.CharField(max_length=150)
