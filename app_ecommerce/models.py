@@ -82,3 +82,6 @@ class Parameter(Base):
 
     title = models.CharField(max_length=150)
     value = models.CharField(max_length=150)
+
+
+MODELS = {'Goods': Goods}

@@ -51,3 +51,10 @@ $secondary: $theme-text-color-secondary;
 @import "theme/styles.scss";
 
 
+/*************************** Custom Styles Section ****************************/
+@import "custom.scss";
+
+/*************************** Animations Section ****************************/
+@import "success_animation.scss";
+
+

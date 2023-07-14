@@ -1,9 +1,12 @@
-from django.http import Http404
+import telegram.error
+from django.http import Http404, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import TemplateView, ListView
 
 from app_ecommerce.models import Goods, Category
+from app_ecommerce.services import send_telegram_message, construct_message
 
 
 # Create your views here.
@@ -60,3 +63,16 @@ class GoodsListView(ListView):
             query_set = super().get_queryset()
             query_set = query_set.filter(is_active=True)
             return query_set
+
+
+class SendMessageView(View):
+    def post(self, request, *args, **kwargs):
+        data = request.POST
+        message = construct_message(data)
+        response = send_telegram_message(message)
+
+        return JsonResponse(response)
+
+    def get(self, request, *args, **kwargs):
+        raise Http404
+

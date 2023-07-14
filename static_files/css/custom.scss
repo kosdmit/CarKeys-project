@@ -1,0 +1,15 @@
+.card {
+	.card-body .card-title {
+		white-space: nowrap;
+	    overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.card-body .card-text {
+		display: -webkit-box;
+	    -webkit-line-clamp: 3;
+	    -webkit-box-orient: vertical;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	}
+}

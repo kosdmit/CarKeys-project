@@ -1,0 +1,17 @@
+<!-- Modal -->
+<div class="modal fade" id="{% block modal-id %}{% endblock %}" tabindex="-1" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog {% block modal-dialog-classes %}{% endblock %}">
+    <div class="modal-content">
+      {% block title-image %}{% endblock %}
+      <div class="modal-header justify-content-start">
+        {% block modal-header %}{% endblock %}
+      </div>
+      <div class="modal-body">
+        {% block modal-body %}{% endblock %}
+      </div>
+      <div class="modal-footer d-block d-sm-flex">
+        {% block modal-footer %}{% endblock %}
+      </div>
+    </div>
+  </div>
+</div>

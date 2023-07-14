@@ -21,6 +21,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-tbnv)a0o_iqyjf!td#ehkcgd-hk&m)6^f%vg!j=%z0(sb0b3!3'
+TELEGRAM_ADMIN_CHAT_ID = '-801091439'
+# TAWK_API_KEY = os.environ['TAWK_API_KEY'] TODO: This line will be deleted
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
