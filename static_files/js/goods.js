@@ -105,3 +105,10 @@ function removeUrlParameters() {
   let urlWithoutParameters = window.location.origin + window.location.pathname;
   window.history.replaceState({}, document.title, urlWithoutParameters);
 }
+
+
+// Fix for success modal close button
+$('#success-modal button[data-bs-dismiss="modal"]').click(function () {
+  let modal = new bootstrap.Modal(document.getElementById('success-modal'));
+  modal.hide()
+})
