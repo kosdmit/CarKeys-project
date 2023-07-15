@@ -31,8 +31,6 @@ const csrftoken = getCookie('csrftoken');
 
 
 // Buy button for goods
-let getContactsModal = new bootstrap.Modal(document.getElementById('get-contacts-modal'));
-let successModal = new bootstrap.Modal(document.getElementById('success-modal'));
 $("button.order-button").each(function(){
   let processingButton = $(this).next();
   let successButton = processingButton.next();
@@ -59,10 +57,14 @@ $("button.order-button").each(function(){
           await new Promise(r => setTimeout(r, 1300));
           if (response.next === 'get-contacts-modal') {
             detailViewModal.hide();
+            let getContactsModal = new bootstrap.Modal(document.getElementById('get-contacts-modal'));
             getContactsModal.show();
           } else if (response.next === 'success-modal') {
             detailViewModal.hide();
+            console.log('want to open success modal')
+            let successModal = new bootstrap.Modal(document.getElementById('success-modal'));
             successModal.show();
+            // Check success modal is opened
           }
 
         } else {
@@ -109,6 +111,13 @@ function removeUrlParameters() {
 
 // Fix for success modal close button
 $('#success-modal button[data-bs-dismiss="modal"]').click(function () {
-  let modal = new bootstrap.Modal(document.getElementById('success-modal'));
+  const modal = new bootstrap.Modal(document.getElementById('success-modal'))
   modal.hide()
+  let modalDom = document.getElementById('success-modal')
+  modalDom.style = ['display: none;']
+  document.body.classList.remove('modal-open');  // allows body to scroll again
+  document.body.removeAttribute('style')
+  let backdrop = document.getElementsByClassName('modal-backdrop'); // gets the modal backdrop
+  document.body.removeChild(backdrop[0]);  // removes the modal backdrop
+  console.log('Try to close modal')
 })
