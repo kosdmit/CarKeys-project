@@ -17,10 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from app_ecommerce.views import GoodsListView, SendMessageView
+from app_ecommerce.views import GoodsListView, OrderCreateView, \
+    CustomerUpdateView
 from app_landing.views import MainView
 
 urlpatterns = [
     path('', GoodsListView.as_view(), name='goods'),
-    path('send_message/', SendMessageView.as_view(), name='send_message')
+    path('order_create/', OrderCreateView.as_view(), name='order_create'),
+    path('customer_update/', CustomerUpdateView.as_view(), name='customer_update'),
 ]

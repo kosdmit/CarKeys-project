@@ -9,6 +9,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_delete
 
 from app_ecommerce.models_mixins import CompressImageBeforeSaveMixin
+from app_ecommerce.validators import phone_number_validator
 
 
 # Create your models here.
@@ -85,3 +86,24 @@ class Parameter(Base):
 
 
 MODELS = {'Goods': Goods}
+
+
+class Customer(Base):
+    session_id = models.CharField(max_length=32)
+    name = models.CharField(max_length=150)
+    phone_number = models.CharField(max_length=15, blank=True, null=True, validators=[phone_number_validator, ])
+    last_visit = models.DateTimeField(auto_now=True)
+
+
+class Order(Base):
+    STATUSES = [
+        ('new', 'не обработанная заявка'),
+        ('active', 'в работе'),
+        ('closed', 'завершено'),
+        ('success_sell', 'услуга оказана'),
+    ]
+
+    customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
+    goods = models.ForeignKey('Goods', on_delete=models.PROTECT)
+    status = models.CharField(max_length=12, choices=STATUSES, default=STATUSES[0][0])
+

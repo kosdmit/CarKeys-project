@@ -1,6 +1,6 @@
 {% extends 'blocks/modals/modal-base.html' %}
 
-{% block modal-id %}get-contacts-modal{% endblock %}
+{% block modal-id %}success-modal{% endblock %}
 {% block modal-dialog-classes %}modal-dialog-centered{% endblock %}
 
 {% block modal-header %}
@@ -9,29 +9,17 @@
     <circle id="successAnimationCircle" class="dark" cx="35" cy="35" r="24" stroke="#979797" stroke-width="2" stroke-linecap="round" fill="transparent"/>
     <polyline id="successAnimationCheck" class="dark" stroke="#979797" stroke-width="2" points="23 34 34 43 47 27" fill="transparent"/>
   </svg>
-  <h1 class="modal-title fs-5" id="successTitle">Заказ отправлен</h1>
+  <h1 class="modal-title fs-5" id="successTitle">Успешно</h1>
 {% endblock %}
 
 {% block modal-body %}
-  <form action="{% url 'customer_update' %}" method="post">
-    {% csrf_token %}
-    <p>Мы уже проверяем детали вашего заказа.</p>
-    <p>Укажите ваши контактные данные, чтобы мы могли связаться с вами для уточнения информации.</p>
-    {% for field in customer_form %}
-      <div class="mb-3">
-        <label class="form-label">{{ field.label }}</label>
-        {{ field }}
-      </div>
-  {% endfor %}
-
+  <p>Мы получили вашу заявку.</p>
+  <p>Мы уже проверяем нужную информацию, и перезвоним вам в ближайшее время. Ожидайте звонка!</p>
 {% endblock %}
 
 {% block modal-footer %}
     <div class="buttons d-flex justify-content-center mt-3 mt-sm-0">
       <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Закрыть</button>
-      <button type="submit" class="btn btn-primary">
-        Отправить
-      </button>
     </div>
   </form>
 {% endblock %}

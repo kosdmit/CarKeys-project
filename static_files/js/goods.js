@@ -31,7 +31,8 @@ const csrftoken = getCookie('csrftoken');
 
 
 // Buy button for goods
-var getContactsModal = new bootstrap.Modal(document.getElementById('get-contacts-modal'));
+let getContactsModal = new bootstrap.Modal(document.getElementById('get-contacts-modal'));
+let successModal = new bootstrap.Modal(document.getElementById('success-modal'));
 $("button.order-button").each(function(){
   let processingButton = $(this).next();
   let successButton = processingButton.next();
@@ -45,19 +46,25 @@ $("button.order-button").each(function(){
     $.ajax({
       type: 'POST',
       headers: {'X-CSRFToken': csrftoken},
-      url: '/goods/send_message/',
+      url: '/goods/order_create/',
       data: {
         'obj_id': objId,
         'obj_type': 'Goods',
         'message_type': 'preorder',
       },
       success: async function (response) {
-        if (response.ok == true) {
+        if (response.ok === true) {
           processingButton.hide();
           successButton.show();
           await new Promise(r => setTimeout(r, 1300));
-          detailViewModal.hide();
-          getContactsModal.show();
+          if (response.next === 'get-contacts-modal') {
+            detailViewModal.hide();
+            getContactsModal.show();
+          } else if (response.next === 'success-modal') {
+            detailViewModal.hide();
+            successModal.show();
+          }
+
         } else {
           //  TODO
         }
@@ -66,3 +73,35 @@ $("button.order-button").each(function(){
     });
   });
 });
+
+
+// Open modal if URL param exists
+window.addEventListener('load', function() {
+  let urlParams = new URLSearchParams(window.location.search);
+  let modalId = urlParams.get('modal_id');
+
+  if (modalId) {
+    let modal = new bootstrap.Modal(document.getElementById(modalId));
+    let modalDom = document.getElementById(modalId);
+    modalDom.classList.remove('fade')
+    modal.show();
+    setTimeout(function() {
+      modalDom.classList.add('fade')
+    }, 1000);
+
+  }
+});
+
+
+//Clear url parameters then modals are hidden
+const modals = document.querySelectorAll('.modal')
+for (let i = 0 ; i < modals.length; i++) {
+  modals[i].addEventListener('hide.bs.modal', event => {
+    removeUrlParameters()
+  })
+}
+
+function removeUrlParameters() {
+  let urlWithoutParameters = window.location.origin + window.location.pathname;
+  window.history.replaceState({}, document.title, urlWithoutParameters);
+}
