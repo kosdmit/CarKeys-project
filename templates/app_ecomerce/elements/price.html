@@ -1,0 +1,6 @@
+<span class="fs-4 me-1">{{ goods.price }} ₽</span>
+{% if goods.count > 0 %}
+  <span class="badge goods-available text-bg-primary rounded-pill m-0 me-auto text-white align-self-center">В наличии</span>
+{% else %}
+  <span class="badge goods-available text-bg-secondary rounded-pill m-0 me-auto text-white align-self-center">Нет в наличии</span>
+{% endif %}

@@ -97,7 +97,8 @@ class OrderCreateView(View):
 
         ordered_goods = self.request.session.get('ordered_goods')
         if ordered_goods:
-            self.request.session['ordered_goods'].append(goods.pk)
+            self.request.session['ordered_goods'].append(str(goods.pk))
+            self.request.session.save()
         else:
             self.request.session['ordered_goods'] = [str(goods.pk)]
 
