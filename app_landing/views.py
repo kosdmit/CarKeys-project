@@ -16,6 +16,7 @@ class MainView(AddCallbackFormMixin, TemplateView):
         context['goods_link'] = reverse_lazy('goods')
         goods_list = Goods.objects.all()[:3]
         context['goods_list'] = goods_list
+        context['page_obj'] = goods_list
 
         return context
 

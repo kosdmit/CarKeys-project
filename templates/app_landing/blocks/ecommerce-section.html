@@ -3,12 +3,7 @@
 <section class="ecommerce-section py-5">
   <div class="container py-lg-5 position-relative">
     {% include 'elements/titles/secondary_title.html' with text='Каталог услуг' %}
-
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
-      {% for goods in goods_list %}
-        {% include 'app_landing/elements/ecommerce-item.html' %}
-      {% endfor %}
-    </div>
+    {% include 'app_ecomerce/elements/cards-list.html' %}
     <div class="pt-4 text-center">
       {% include 'elements/buttons/primary_button.html' with ghost='True' text='Смотреть все' link=goods_link %}
     </div>
