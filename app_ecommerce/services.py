@@ -1,27 +1,50 @@
 import os
+from textwrap import dedent
 
 import requests
-from telegram import Bot
+from django.http import Http404
+from django.urls import reverse
 
-from app_ecommerce.models import MODELS
+from app_ecommerce.models import Goods, Customer
 from carkeys_project.settings import TELEGRAM_ADMIN_CHAT_ID
 
 
-def construct_message(data):
-    obj_id = data.get('obj_id')
-    obj_type = data.get('obj_type')
-    obj = MODELS[obj_type].objects.get(pk=obj_id)
-    message_type = data.get('message_type')
+def construct_message(request, goods=None):
+    session_id = request.session.session_key
+    customer = Customer.objects.get(session_id=session_id)
 
-    message = f"""
-Системное уведомление
-Заказана услуга: {obj.title}
-Наличие на сайте: {obj.count} 
-Стоимость на сайте: {obj.price}
-Пользователь нажал кнопку заказать услугу, но еще не предоставил свои контактные данные, \
-проверьте наличие указанного товара, его фактическое наличие и другие характеристики.
-Ссылка:
-"""
+    if not goods:
+        last_order = customer.order_set.last()
+        if last_order:
+            goods = last_order.goods
+
+    if goods and not customer.phone_number:
+        message = dedent(f"""
+            Запрос клиента 
+            Заказана услуга: {goods.title}
+            Наличие на сайте: {goods.count} 
+            Стоимость на сайте: {goods.price}
+            Пользователь {customer.name} нажал кнопку заказать услугу, но еще не предоставил свои контактные данные, \
+            проверьте наличие указанного товара, его фактическое наличие и другие характеристики.
+            Ссылка: {reverse('goods') + '?modal=detail-view-modal-' + str(goods.pk)}
+            """)
+    elif goods and customer.phone_number:
+        message = dedent(f"""
+            Запрос клиента 
+            Пользователь: Имя - {customer.name}, Телефон - {customer.phone_number}
+            Заказана услуга: {goods.title}
+            Наличие на сайте: {goods.count} 
+            Стоимость на сайте: {goods.price}
+            Ссылка: {reverse('goods') + '?modal=detail-view-modal-' + str(goods.pk)}
+            """)
+    elif customer.phone_number:
+        message = dedent(f"""
+            Запрос клиента 
+            Пользователь: Имя - {customer.name}, Телефон - {customer.phone_number}
+            Пользователь заказал обратный звонок на сайте. Заказанные услуги отсутствуют.
+            """)
+    else:
+        message = "Ошибка при формировании сообщения"
 
     return message
 

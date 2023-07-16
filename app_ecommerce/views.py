@@ -55,11 +55,13 @@ class GoodsListView(ListView):
 
         # Get Forms
         session_id = self.request.session.session_key
-        if not session_id:
+        if session_id:
+            customer = Customer.objects.filter(session_id=session_id).first()
+        else:
             self.request.session.create()
             session_id = self.request.session.session_key
+            customer = Customer.objects.create(session_id=session_id)
 
-        customer = Customer.objects.filter(session_id=session_id).first()
         customer_form = CustomerForm(instance=customer)
         context['customer_form'] = customer_form
 
@@ -78,10 +80,9 @@ class GoodsListView(ListView):
 
 class OrderCreateView(View):
     def post(self, request, *args, **kwargs):
-        data = request.POST
-
         try:
-            goods = Goods.objects.get(pk=data['obj_id'])
+            obj_id = request.POST['obj_id']
+            goods = Goods.objects.get(pk=obj_id)
         except Goods.DoesNotExist:
             raise Http404
 
@@ -102,7 +103,7 @@ class OrderCreateView(View):
         else:
             self.request.session['ordered_goods'] = [str(goods.pk)]
 
-        message = construct_message(data)
+        message = construct_message(request=self.request, goods=goods)
         response = send_telegram_message(message)
 
         if customer.phone_number:
@@ -122,7 +123,13 @@ class CustomerUpdateView(UpdateView):
 
     def get_object(self, queryset=None):
         session_id = self.request.session.session_key
-        obj = Customer.objects.get(session_id=session_id)
+        if session_id:
+            obj = Customer.objects.get(session_id=session_id)
+        else:
+            self.request.session.create()
+            session_id = self.request.session.session_key
+            obj = Customer.objects.create(session_id=session_id)
+
         return obj
 
     def form_valid(self, form):
@@ -130,6 +137,10 @@ class CustomerUpdateView(UpdateView):
         customer = {'name': self.object.name,
                     'phone_number': self.object.phone_number}
         self.request.session['customer'] = customer
+
+        message = construct_message(request=self.request)
+        response = send_telegram_message(message)
+
         return super().form_valid(form)
 
     def get_success_url(self):

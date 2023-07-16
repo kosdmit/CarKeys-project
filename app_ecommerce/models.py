@@ -85,9 +85,6 @@ class Parameter(Base):
     value = models.CharField(max_length=150)
 
 
-MODELS = {'Goods': Goods}
-
-
 class Customer(Base):
     session_id = models.CharField(max_length=32)
     name = models.CharField(max_length=150)

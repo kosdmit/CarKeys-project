@@ -47,8 +47,6 @@ $("button.order-button").each(function(){
       url: '/goods/order_create/',
       data: {
         'obj_id': objId,
-        'obj_type': 'Goods',
-        'message_type': 'preorder',
       },
       success: async function (response) {
         if (response.ok === true) {
