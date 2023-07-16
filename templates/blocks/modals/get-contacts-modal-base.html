@@ -1,0 +1,29 @@
+{% extends 'blocks/modals/modal-base.html' %}
+
+{% block modal-id %}{% endblock %}
+{% block modal-dialog-classes %}modal-dialog-centered{% endblock %}
+
+{% block modal-header %}{% endblock %}
+
+{% block modal-body %}
+  <form action="{% url 'customer_update' %}" method="post">
+    {% csrf_token %}
+    {% block modal-body-text %}{% endblock %}
+    {% for field in customer_form %}
+      <div class="mb-3">
+        <label class="form-label">{{ field.label }}</label>
+        {{ field }}
+      </div>
+  {% endfor %}
+
+{% endblock %}
+
+{% block modal-footer %}
+    <div class="buttons d-flex justify-content-center mt-3 mt-sm-0">
+      <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Закрыть</button>
+      <button type="submit" class="btn btn-primary">
+        Отправить
+      </button>
+    </div>
+  </form>
+{% endblock %}
