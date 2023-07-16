@@ -55,6 +55,10 @@ class GoodsListView(ListView):
 
         # Get Forms
         session_id = self.request.session.session_key
+        if not session_id:
+            self.request.session.create()
+            session_id = self.request.session.session_key
+
         customer = Customer.objects.filter(session_id=session_id).first()
         customer_form = CustomerForm(instance=customer)
         context['customer_form'] = customer_form
@@ -91,6 +95,12 @@ class OrderCreateView(View):
 
         order = Order.objects.create(goods=goods, customer=customer)
 
+        ordered_goods = self.request.session.get('ordered_goods')
+        if ordered_goods:
+            self.request.session['ordered_goods'].append(goods.pk)
+        else:
+            self.request.session['ordered_goods'] = [str(goods.pk)]
+
         message = construct_message(data)
         response = send_telegram_message(message)
 
@@ -113,6 +123,13 @@ class CustomerUpdateView(UpdateView):
         session_id = self.request.session.session_key
         obj = Customer.objects.get(session_id=session_id)
         return obj
+
+    def form_valid(self, form):
+        self.object = form.save()
+        customer = {'name': self.object.name,
+                    'phone_number': self.object.phone_number}
+        self.request.session['customer'] = customer
+        return super().form_valid(form)
 
     def get_success_url(self):
         return self.request.META['HTTP_REFERER'] + '?modal_id=success-modal'
