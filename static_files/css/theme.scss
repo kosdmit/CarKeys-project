@@ -43,6 +43,9 @@ $gray-900: $theme-text-color-primary;
 $primary: $theme-color-primary;
 $secondary: $theme-text-color-secondary;
 
+/* Custom overrides BS5 variables */
+$accordion-button-active-bg: lighten($theme-color-primary, 35%);
+
 /*************************** Import Bootstrap  *****************************/
 @import "../../bootstrap-5.3.0/scss/bootstrap";
 

@@ -30,6 +30,9 @@ class Base(models.Model):
 
         return str
 
+    def get_class_name(self):
+        return self.__class__.__name__
+
 
 class Goods(CompressImageBeforeSaveMixin, Base):
     def __init__(self, *args, **kwargs):
@@ -101,6 +104,23 @@ class Order(Base):
     ]
 
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
-    goods = models.ForeignKey('Goods', on_delete=models.PROTECT)
+    goods = models.ForeignKey('Goods', on_delete=models.PROTECT, null=True)
+    service = models.ForeignKey('Service', on_delete=models.PROTECT, null=True)
     status = models.CharField(max_length=12, choices=STATUSES, default=STATUSES[0][0])
+
+    def clean(self):
+        if not self.goods and not self.service:
+            raise ValidationError("At least one of Goods or Service must be set")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
+
+
+class Service(Base):
+    title = models.CharField(max_length=150)
+    description = models.TextField()
+    price = models.IntegerField()
+    price_prefix = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
 

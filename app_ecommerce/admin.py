@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from app_ecommerce.models import Goods, Category, Parameter
+from app_ecommerce.models import Goods, Category, Parameter, Customer, Order, \
+    Service
 
 
 # Register your models here.
@@ -14,4 +15,16 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Parameter)
 class ParameterAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin):
     pass

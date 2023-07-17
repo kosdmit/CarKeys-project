@@ -27,6 +27,6 @@
   {% include 'app_ecomerce/elements/price.html' %}
   <div class="buttons d-flex justify-content-center mt-3 mt-sm-0">
     <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Закрыть</button>
-    {% include 'elements/buttons/order-button.html' with detail_view='True' %}
+    {% include 'elements/buttons/order-button.html' with is_primary='True' in_modal='True' obj=goods %}
   </div>
 {% endblock %}

@@ -16,7 +16,7 @@
                 data-bs-toggle="modal" data-bs-target="#detail-view-modal-{{ goods.pk }}">
           Подробнее
         </button>
-        {% include 'elements/buttons/order-button.html' %}
+        {% include 'elements/buttons/order-button.html' with obj=goods %}
       </div>
     </div>
   </div>

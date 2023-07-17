@@ -6,13 +6,13 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 
 from app_ecommerce.forms import CustomerForm
-from app_ecommerce.mixins import AddCallbackFormMixin
-from app_ecommerce.models import Goods, Category, Order, Customer
+from app_ecommerce.mixins import AddCallbackFormMixin, AddPriceListDataMixin
+from app_ecommerce.models import Goods, Category, Order, Customer, Service
 from app_ecommerce.services import send_telegram_message, construct_message
 
 
 # Create your views here.
-class GoodsListView(AddCallbackFormMixin, ListView):
+class GoodsListView(AddPriceListDataMixin, AddCallbackFormMixin, ListView):
     template_name = 'app_ecomerce/goods.html'
     model = Goods
     paginate_by = 9
@@ -70,10 +70,13 @@ class GoodsListView(AddCallbackFormMixin, ListView):
 
 class OrderCreateView(View):
     def post(self, request, *args, **kwargs):
+        obj_id = request.POST['obj_id']
+        obj_class_name = request.POST['obj_type']
+        obj_class = globals()[obj_class_name]
+
         try:
-            obj_id = request.POST['obj_id']
-            goods = Goods.objects.get(pk=obj_id)
-        except Goods.DoesNotExist:
+            obj = obj_class.objects.get(pk=obj_id)
+        except obj_class.DoesNotExist:
             raise Http404
 
         session_id = self.request.session.session_key
@@ -84,16 +87,19 @@ class OrderCreateView(View):
         if not customer:
             customer = Customer.objects.create(session_id=session_id)
 
-        order = Order.objects.create(goods=goods, customer=customer)
+        if obj_class == Goods:
+            order = Order.objects.create(goods=obj, customer=customer)
+        elif obj_class == Service:
+            order = Order.objects.create(service=obj, customer=customer)
 
         ordered_goods = self.request.session.get('ordered_goods')
         if ordered_goods:
-            self.request.session['ordered_goods'].append(str(goods.pk))
+            self.request.session['ordered_goods'].append(str(obj.pk))
             self.request.session.save()
         else:
-            self.request.session['ordered_goods'] = [str(goods.pk)]
+            self.request.session['ordered_goods'] = [str(obj.pk)]
 
-        message = construct_message(request=self.request, goods=goods)
+        message = construct_message(request=self.request, obj=obj)
         response = send_telegram_message(message)
 
         if customer.phone_number:

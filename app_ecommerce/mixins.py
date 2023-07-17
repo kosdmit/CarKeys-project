@@ -1,5 +1,5 @@
 from app_ecommerce.forms import CustomerForm
-from app_ecommerce.models import Customer
+from app_ecommerce.models import Customer, Service
 
 
 class AddCallbackFormMixin:
@@ -16,5 +16,15 @@ class AddCallbackFormMixin:
 
         customer_form = CustomerForm(instance=customer)
         context['customer_form'] = customer_form
+
+        return context
+
+
+class AddPriceListDataMixin:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        price_list = Service.objects.all()
+        context['price_list'] = price_list
 
         return context
