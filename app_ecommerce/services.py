@@ -16,46 +16,24 @@ def construct_message(request, obj=None):
     if not obj:
         last_order = customer.order_set.last()
         if last_order:
-            obj = last_order.goods
-            if not obj:
-                obj = last_order.service
+            obj = last_order.goods or last_order.service
 
-    obj_class = obj.__class__
+    if obj:
+        obj_class = type(obj)
+        obj_name = 'товар' if obj_class == Goods else 'услуга'
+        link = f'{reverse("goods") + "?modal=detail-view-modal-" + str(obj.pk)}' if obj_class == Goods else ''
+        availability = f'Наличие на сайте: {obj.count} ' if obj_class == Goods else ''
 
-    if obj_class == Goods and not customer.phone_number:
         message = dedent(f"""
             Запрос клиента 
-            Заказан товар: {obj.title}
-            Наличие на сайте: {obj.count} 
-            Стоимость на сайте: {obj.price}
-            Пользователь {customer.name} нажал кнопку заказать товар, но еще не предоставил свои контактные данные, \
-            проверьте наличие указанного товара, его фактическое наличие и другие характеристики.
-            Ссылка: {reverse('goods') + '?modal=detail-view-modal-' + str(obj.pk)}
-            """)
-    elif obj_class == Service and not customer.phone_number:
-        message = dedent(f"""
-            Запрос клиента 
-            Заказана услуга: {obj.title}
+            {"Пользователь: Имя - " + customer.name + ", Телефон - " + customer.phone_number if customer.phone_number 
+                else "Пользователь нажал кнопку заказать " + obj_name + ", но еще не предоставил свои контактные данные, проверьте наличие и другие характеристики."}
+            Заказ: {obj_name} - {obj.title}
+            {availability}
             Стоимость на сайте: {'от' if obj.price_prefix else ''} {obj.price}
-            Пользователь {customer.name} нажал кнопку заказать услугу, но еще не предоставил свои контактные данные, \
-            проверьте наличие указанного товара, его фактическое наличие и другие характеристики.
+            {link}
             """)
-    elif obj_class == Goods and customer.phone_number:
-        message = dedent(f"""
-            Запрос клиента 
-            Пользователь: Имя - {customer.name}, Телефон - {customer.phone_number}
-            Заказана услуга: {obj.title}
-            Наличие на сайте: {obj.count} 
-            Стоимость на сайте: {obj.price}
-            Ссылка: {reverse('goods') + '?modal=detail-view-modal-' + str(obj.pk)}
-            """)
-    elif obj_class == Service and customer.phone_number:
-        message = dedent(f"""
-            Запрос клиента 
-            Пользователь: Имя - {customer.name}, Телефон - {customer.phone_number}
-            Заказана услуга: {obj.title}
-            Стоимость на сайте: {'от' if obj.price_prefix else ''} {obj.price}
-            """)
+
     elif customer.phone_number:
         message = dedent(f"""
             Запрос клиента 

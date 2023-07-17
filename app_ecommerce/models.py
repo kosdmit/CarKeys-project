@@ -46,6 +46,7 @@ class Goods(CompressImageBeforeSaveMixin, Base):
     description = models.TextField()
     image = models.ImageField(upload_to='images/goods_images/', blank=True, null=True)
     price = models.IntegerField()
+    price_prefix = models.BooleanField(default=False)
     count = models.IntegerField()
     is_active = models.BooleanField(default=False)
 

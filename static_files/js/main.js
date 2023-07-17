@@ -25,7 +25,11 @@ const csrftoken = getCookie('csrftoken');
 
 
 // Buy button for goods
-$("button.order-button").each(function(){
+// TODO: optimize this function
+let priceListModal = new bootstrap.Modal(
+  document.getElementById('price-list-modal')
+);
+$("button.order-button").each(function () {
   let objId = $(this).data('obj-id');
   let orderButton = $('#order-button-' + objId)
   let orderButtonModal = $('#order-button-modal-' + objId)
@@ -33,14 +37,13 @@ $("button.order-button").each(function(){
   let processingButtonModal = $('#process-button-modal-' + objId)
   let successButton = $('#success-button-' + objId)
   let successButtonModal = $('#success-button-modal-' + objId)
+  let modal
   try {
-    var Modal = new bootstrap.Modal(
+    modal = new bootstrap.Modal(
       document.getElementById('detail-view-modal-' + objId)
     );
   } catch (error) {
-    var Modal = new bootstrap.Modal(
-      document.getElementById('price-list-modal')
-    );
+    modal = priceListModal
   }
   $(this).click(function () {
     orderButton.hide()
@@ -62,16 +65,13 @@ $("button.order-button").each(function(){
           successButton.show()
           successButtonModal.show()
           await new Promise(r => setTimeout(r, 1300));
+          modal.hide();
           if (response.next === 'get-contacts-modal') {
-            Modal.hide();
             let getContactsModal = new bootstrap.Modal(document.getElementById('get-contacts-modal'));
             getContactsModal.show();
           } else if (response.next === 'success-modal') {
-            Modal.hide();
-            console.log('want to open success modal')
             let successModal = new bootstrap.Modal(document.getElementById('success-modal'));
             successModal.show();
-            // Check success modal is opened
           }
 
         } else {
