@@ -56,8 +56,7 @@ $accordion-button-active-bg: lighten($theme-color-primary, 35%);
 
 /*************************** Custom Styles Section ****************************/
 @import "custom.scss";
-
-/*************************** Animations Section ****************************/
+@import "hori-timeline";
 @import "success_animation.scss";
 
 

@@ -1,0 +1,106 @@
+{% extends 'blocks/modals/modal-base.html' %}
+
+{% block modal-id %}schedule-modal{% endblock %}
+{% block modal-size %}modal-lg{% endblock %}
+{% block modal-dialog-classes %}{% endblock %}
+
+{% block modal-header %}
+  <i class="fa-regular fa-calendar-days"></i>
+  <h1 class="modal-title fs-5 ms-2" id="successTitle">График работы</h1>
+{% endblock %}
+
+{% block modal-body %}
+  <div class="row row-cols-1 row-cols-lg-2 align-items-md-center g-4 py-5 px-2">
+    <div class="col d-flex flex-column align-items-start gap-2">
+      <h2 class="fw-bold text-body-emphasis">Работаем по предварительной записи</h2>
+      <p class="text-body-secondary">Оставьте заявку на сайте или по телефону, чтобы согласовать время проведения работ.</p>
+      <a href="#" class="btn btn-primary btn-lg">Оставить заявку</a>
+    </div>
+
+    <div class="col">
+      <div class="row row-cols-1 row-cols-sm-2 g-4">
+        <div class="col d-flex flex-column gap-2">
+          <div class="feature-icon-small d-inline-flex align-items-center align-self-start justify-content-center text-bg-primary bg-gradient fs-5 rounded-3 p-3">
+            <i class="fa-solid fa-chalkboard-user text-white"></i>
+          </div>
+          <h4 class="fw-semibold mb-0 text-body-emphasis">Прием заявок онлайн</h4>
+          <p class="text-body-secondary">Принимаем заявки на сайте круглосуточно.</p>
+        </div>
+
+        <div class="col d-flex flex-column gap-2">
+          <div class="feature-icon-small d-inline-flex align-items-center align-self-start justify-content-center text-bg-primary bg-gradient fs-5 rounded-3 p-3">
+            <i class="fa-solid fa-phone text-white"></i>
+          </div>
+          <h4 class="fw-semibold mb-0 text-body-emphasis">Прием звонков</h4>
+          <p class="text-body-secondary">Ежедневно с 9:00 до 21:00, без выходных.</p>
+        </div>
+
+        <div class="col d-flex flex-column gap-2">
+          <div class="feature-icon-small d-inline-flex align-items-center align-self-start justify-content-center text-bg-primary bg-gradient fs-5 rounded-3 p-3">
+            <i class="fa-solid fa-user-pen text-white"></i>
+          </div>
+          <h4 class="fw-semibold mb-0 text-body-emphasis">Обработка заявок</h4>
+          <p class="text-body-secondary">Ежедневно с 9:00 до 21:00, без выходных.</p>
+        </div>
+
+        <div class="col d-flex flex-column gap-2">
+          <div class="feature-icon-small d-inline-flex align-items-center align-self-start justify-content-center text-bg-primary bg-gradient fs-5 rounded-3 p-3">
+            <i class="fa-solid fa-car-on text-white"></i>
+          </div>
+          <h4 class="fw-semibold mb-0 text-body-emphasis">Проведение работ</h4>
+          <p class="text-body-secondary">Работаем по гибкому графику, согласовывая время с клиентом.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <h4 class="card-title mb-5">Три простых шага</h4>
+        <div class="hori-timeline" dir="ltr">
+          <ul class="list-inline events">
+            <li class="list-inline-item event-list">
+              <div class="px-4">
+                <div class="event-date bg-soft-primary text-primary">Заявка</div>
+                <h5 class="font-size-16">
+                  Оставьте заявку
+                  <br><br>
+                </h5>
+                <p class="text-muted">
+                  Для начала оставьте заявку на сайте или по телефону.
+                  Мы обработаем заявку в кратчайшие сроки.
+                  <br><br>
+                </p>
+              </div>
+            </li>
+            <li class="list-inline-item event-list">
+              <div class="px-4">
+                <div class="event-date bg-soft-success text-success">Звонок</div>
+                <h5 class="font-size-16">Обработка обращения</h5>
+                <p class="text-muted">Наш специалист свяжется с вами для уточнения всех деталей.
+                  Вместе мы определим удобное для вас время и место проведения работ.</p>
+              </div>
+            </li>
+            <li class="list-inline-item event-list">
+              <div class="px-4">
+                <div class="event-date bg-soft-danger text-danger">Работа</div>
+                <h5 class="font-size-16">Выполнение заказа</h5>
+                <p class="text-muted">
+                  В назначенное время, наши специалисты выполнят необходимые работы.
+                  <br><br>
+                  <br>
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block modal-footer %}
+    <div class="buttons d-flex justify-content-center mt-3 mt-sm-0">
+      <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Закрыть</button>
+    </div>
+{% endblock %}
