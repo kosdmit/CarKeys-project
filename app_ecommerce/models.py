@@ -125,3 +125,8 @@ class Service(Base):
     price_prefix = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
 
+
+class Message(Base):
+    customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
+    text = models.TextField()
+

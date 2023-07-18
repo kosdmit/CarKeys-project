@@ -1,8 +1,8 @@
-from app_ecommerce.forms import CustomerForm
+from app_ecommerce.forms import CustomerForm, MessageForm
 from app_ecommerce.models import Customer, Service
 
 
-class AddCallbackFormMixin:
+class AddCustomerFormMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -16,6 +16,7 @@ class AddCallbackFormMixin:
 
         customer_form = CustomerForm(instance=customer)
         context['customer_form'] = customer_form
+        context['message_form'] = MessageForm()
 
         return context
 

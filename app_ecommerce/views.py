@@ -6,13 +6,14 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 
 from app_ecommerce.forms import CustomerForm
-from app_ecommerce.mixins import AddCallbackFormMixin, AddPriceListDataMixin
-from app_ecommerce.models import Goods, Category, Order, Customer, Service
+from app_ecommerce.mixins import AddCustomerFormMixin, AddPriceListDataMixin
+from app_ecommerce.models import Goods, Category, Order, Customer, Service, \
+    Message
 from app_ecommerce.services import send_telegram_message, construct_message
 
 
 # Create your views here.
-class GoodsListView(AddPriceListDataMixin, AddCallbackFormMixin, ListView):
+class GoodsListView(AddPriceListDataMixin, AddCustomerFormMixin, ListView):
     template_name = 'app_ecomerce/goods.html'
     model = Goods
     paginate_by = 9
@@ -134,8 +135,11 @@ class CustomerUpdateView(UpdateView):
                     'phone_number': self.object.phone_number}
         self.request.session['customer'] = customer
 
-        message = construct_message(request=self.request)
-        response = send_telegram_message(message)
+        if form.data.get('text'):
+            message = Message.objects.create(customer=self.object, text=form.data['text'])
+
+        service_message = construct_message(request=self.request)
+        response = send_telegram_message(service_message)
 
         return super().form_valid(form)
 

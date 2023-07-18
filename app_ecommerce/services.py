@@ -23,6 +23,7 @@ def construct_message(request, obj=None):
         obj_name = 'товар' if obj_class == Goods else 'услуга'
         link = f'{reverse("goods") + "?modal=detail-view-modal-" + str(obj.pk)}' if obj_class == Goods else ''
         availability = f'Наличие на сайте: {obj.count} ' if obj_class == Goods else ''
+        customer_message = request.POST.get('text')
 
         message = dedent(f"""
             Запрос клиента 
@@ -32,12 +33,15 @@ def construct_message(request, obj=None):
             {availability}
             Стоимость на сайте: {'от' if obj.price_prefix else ''} {obj.price}
             {link}
+            {'Сообщение от пользователя: ' + customer_message if customer_message else ''}
             """)
 
     elif customer.phone_number:
+        customer_message = request.POST.get('text')
         message = dedent(f"""
             Запрос клиента 
             Пользователь: Имя - {customer.name}, Телефон - {customer.phone_number}
+            {'Сообщение от пользователя: ' + customer_message if customer_message else ''}
             Пользователь заказал обратный звонок на сайте. Заказанные услуги отсутствуют.
             """)
     else:

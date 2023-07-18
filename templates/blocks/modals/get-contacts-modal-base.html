@@ -14,7 +14,16 @@
         <label class="form-label">{{ field.label }}</label>
         {{ field }}
       </div>
-  {% endfor %}
+    {% endfor %}
+    {% for field in message_form %}
+      <div class="mb-3">
+        <label class="form-label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.name == 'text' %}
+          <div id="textHelp" class="form-text">Необязательное поле</div>
+        {% endif %}
+      </div>
+    {% endfor %}
 
 {% endblock %}
 

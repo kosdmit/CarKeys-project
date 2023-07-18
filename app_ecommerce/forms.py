@@ -1,6 +1,6 @@
 from django import forms
 
-from app_ecommerce.models import Customer
+from app_ecommerce.models import Customer, Message
 
 
 class CustomerForm(forms.ModelForm):
@@ -20,3 +20,16 @@ class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
         fields = ['name', 'phone_number']
+
+
+class MessageForm(forms.ModelForm):
+    text = forms.CharField(
+        label='Сообщение:',
+        widget=forms.Textarea(attrs={'class': 'form-control',
+                                     'rows': '3',
+                                     'placeholder': 'Добавьте дополнительную информацию'})
+    )
+
+    class Meta:
+        model = Message
+        fields = ['text']
