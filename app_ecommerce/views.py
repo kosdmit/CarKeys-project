@@ -1,11 +1,8 @@
-import telegram.error
 from django.http import Http404, JsonResponse
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import TemplateView, ListView, CreateView, UpdateView
+from django.views.generic import ListView, UpdateView
 
-from app_ecommerce.forms import CustomerForm
 from app_ecommerce.mixins import AddCustomerFormMixin, AddPriceListDataMixin
 from app_ecommerce.models import Goods, Category, Order, Customer, Service, \
     Message

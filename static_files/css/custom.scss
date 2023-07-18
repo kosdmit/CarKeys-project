@@ -1,4 +1,7 @@
 .card {
+	@media (min-width: 768px) {
+		min-height: 467px;
+	}
 	.card-body .card-title {
 		white-space: nowrap;
 	    overflow: hidden;
