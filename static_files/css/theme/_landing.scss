@@ -129,7 +129,7 @@
 		
 		.figure-holder {
 			min-height: 460px;
-			background-position: right 0px;
+			background-position: right bottom;
 			background-size: 360px auto;
 		}
 	}
@@ -143,8 +143,8 @@
 		text-align: center;
 		
 		.figure-holder {
-			padding-bottom: 400px;
-			background-position: center 400px;
+			padding-bottom: 200px;
+			background-position: center bottom;
 			background-size: 300px auto;
 		}
 	}
@@ -166,7 +166,7 @@
 		
 		.figure-holder {
 			padding-bottom: 200px;
-			background-position: center 450px;
+			background-position: center bottom;
 			background-size: 300px auto;
 		}
 	}
