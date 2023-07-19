@@ -1,55 +1,41 @@
 {% load static %}
 
 <footer class="footer theme-bg-primary">
-  <div class="container py-5 mb-3">
-    <div class="row">
-      <div class="footer-col col-6 col-lg-3">
-        <h4 class="col-heading">About Nova</h4>
+  <div class="container py-5 mb-3 px-3">
+    <div class="row justify-content-around">
+      <div class="footer-col col-6 col-sm-5 col-md-4 col-lg-3">
+        <h4 class="col-heading">CarKey</h4>
         <ul class="list-unstyled">
-          <li><a class="text-link" href="#">Our Story</a></li>
-          <li><a class="text-link" href="#">Pricing</a></li>
-          <li><a class="text-link" href="#">Contact</a></li>
-          <li><a class="text-link" href="#">Jobs</a></li>
+          <li><a class="text-link" href="{% url 'main' %}">Главная</a></li>
+          <li><a class="text-link" href="{% url 'goods' %}">Каталог</a></li>
+          <li><a class="text-link" href="#price-list-modal" data-bs-toggle="modal">Прайс-лист</a></li>
+          <li><a class="text-link" href="#schedule-modal" data-bs-toggle="modal">График работы</a></li>
+          <li><a class="text-link" href="#about-modal" data-bs-toggle="modal">О нас</a></li>
 
         </ul>
       </div><!--//footer-col-->
-      <div class="footer-col col-6 col-lg-3">
-        <h4 class="col-heading">Resources</h4>
-        <ul class="list-unstyled">
-          <li><a class="text-link" href="#">FAQs</a></li>
-          <li><a class="text-link" href="#">Blog</a></li>
-          <li><a class="text-link" href="#">Support</a></li>
-          <li><a class="text-link" href="#">Developer APIs</a></li>
-        </ul>
-      </div><!--//footer-col-->
-      <div class="footer-col col-6 col-lg-3">
-        <h4 class="col-heading">Legal</h4>
-        <ul class="list-unstyled">
-          <li><a class="text-link" href="#">Privacy</a></li>
-          <li><a class="text-link" href="#">Terms of Services</a></li>
-          <li><a class="text-link" href="#">Security</a></li>
-        </ul>
-      </div><!--//footer-col-->
-      <div class="footer-col col-6 col-lg-3">
-        <h4 class="col-heading">Stay Connected</h4>
+
+      <div class="footer-col col-6 col-sm-5 col-md-4 col-lg-3">
+        <h4 class="col-heading">Контакты</h4>
         <ul class="social-list list-unstyled mb-0">
-          <li class="list-inline-item"><a href="#"><i
-                  class="fab fa-instagram fa-fw"></i></a></li>
-          <li class="list-inline-item"><a href="#"><i
-                  class="fab fa-twitter fa-fw"></i></a></li>
-          <li class="list-inline-item"><a href="#"><i
-                  class="fab fa-facebook-f fa-fw"></i></a></li>
-          <li class="list-inline-item"><a href="#"><i
-                  class="fab fa-youtube fa-fw"></i></a></li>
+          <li class="list-inline-item">
+            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#"><i class="fa-brands fa-viber"></i></a>
+          </li>
+
         </ul><!--//social-list-->
 
         <div class="mb-2">
-          Company Name<br>
-          2419 Locust View Drive <br>
-          San Francisco, CA, 94143
+          CarKey,<br>
+          Самара<br>
+        </div>
+        <div class="mb-2">
+          <a class="" href="tel:+79966216227">+7(996)621-62-27</a>
         </div>
         <div>
-          <a class="text-link" href="#">hello@yourcompany.com</a>
+          <a class="text-link" href="#">carkeysamara@mail.ru</a>
         </div>
 
       </div><!--//footer-col-->
