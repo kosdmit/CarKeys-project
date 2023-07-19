@@ -1,0 +1,37 @@
+{% extends 'blocks/modals/modal-base.html' %}
+
+{% block modal-id %}about-modal{% endblock %}
+{% block modal-size %}modal-lg{% endblock %}
+{% block modal-dialog-classes %}{% endblock %}
+
+{% block modal-header %}
+  <i class="fa-solid fa-circle-info"></i>
+  <h1 class="modal-title fs-5 ms-2" id="successTitle">О нас</h1>
+{% endblock %}
+
+{% block modal-body %}
+  <div class="px-4 py-4 my-4 text-center">
+    <h1 class="display-5 fw-bold text-body-emphasis">
+      <i class="fa-solid fa-key"></i>
+      CarKey
+    </h1>
+    <div class="col-lg-8 mx-auto">
+      <p class="">
+        Мы предлагаем широкий спектр услуг, связанных с ремонтом и обслуживанием электронных компонентов автомобильных ключей,
+        замков и сигнализаций. Наша команда готова помочь вам,
+        обеспечивая надежность, качество и профессионализм.
+      </p>
+      <p class="">
+        Мы гарантируем качество нашей работы в течение 1 года по чеку. Для нас качество и добросовестность - это ключевые ценности.
+        Если вы столкнулись с проблемой доступа к вашему автомобилю, требуется срочный ремонт или диагностика - мы готовы помочь!
+      </p>
+      {% include 'elements/buttons/contact-buttons-block.html' with position='center' %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block modal-footer %}
+    <div class="buttons d-flex justify-content-center mt-3 mt-sm-0">
+      <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Закрыть</button>
+    </div>
+{% endblock %}

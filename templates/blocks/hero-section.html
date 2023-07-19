@@ -3,12 +3,7 @@
     <div class="row figure-holder">
       <div class="col-12 col-md-6 pt-3 pt-md-4">
         {% block hero-section-content %}{% endblock %}
-        <div class="cta-btns d-flex justify-content-center justify-content-md-start">
-          <div class="mb-4 me-2">
-            {% include 'elements/buttons/primary_button.html' with link='tel:+79966216227' text='+7(996)621-62-27' %}
-          </div>
-          {% include 'elements/buttons/social_buttons.html' %}
-        </div>
+        {% include 'elements/buttons/contact-buttons-block.html' %}
       </div>
     </div><!--//row-->
   </div>
