@@ -136,3 +136,11 @@ class ServiceAdmin(BaseAdminMixin, admin.ModelAdmin):
 class MessageAdmin(BaseAdminMixin, admin.ModelAdmin):
     list_display = ['num_id', 'customer', 'text', 'created_date']
     list_display_links = ['text']
+
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = super().get_fieldsets(request, obj)
+        fieldsets += [
+            (None, {"fields": ["customer", "text"]}),
+        ]
+
+        return fieldsets

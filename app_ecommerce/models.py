@@ -116,6 +116,9 @@ class Parameter(Base):
         verbose_name = _('parameter')
         verbose_name_plural = _('parameters')
 
+    def __str__(self):
+        return self.title
+
 
 class Customer(Base):
     session_id = models.CharField(max_length=32, verbose_name=_('session'))
@@ -187,4 +190,9 @@ class Message(Base):
     class Meta:
         verbose_name = _('message')
         verbose_name_plural = _('messages')
+
+    def __str__(self):
+        customer = self.customer.__str__()
+        number = _('#') + str(self.num_id)
+        return _('The message ') + number + _(' from ') + customer
 

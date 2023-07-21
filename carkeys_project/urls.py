@@ -17,7 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from django.utils.translation import gettext_lazy as _
 import app_landing
+
+admin.site.site_header = _('CarKey Admin Panel')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
