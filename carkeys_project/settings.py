@@ -28,7 +28,7 @@ DEBUG = True if os.environ['DJANGO_DEBUG'] == 'True' else False
 # DEBUG = False
 SESSION_COOKIE_SECURE = not DEBUG
 
-ALLOWED_HOSTS = ['185.14.45.230:8001',
+ALLOWED_HOSTS = ['185.14.45.230', '185.14.45.230:8001',
                  '127.0.0.1', 'localhost']
 
 
