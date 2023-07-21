@@ -29,6 +29,8 @@ DEBUG = True if os.environ['DJANGO_DEBUG'] == 'True' else False
 # SESSION_COOKIE_SECURE = not DEBUG
 
 ALLOWED_HOSTS = ['185.14.45.230', '185.14.45.230:8001',
+                 'carkeysamara.ru', 'www.carkeysamara.ru',
+                 'carkeysamara.online', 'www.carkeysamara.online',
                  '127.0.0.1', 'localhost']
 
 
