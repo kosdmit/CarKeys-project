@@ -20,15 +20,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-tbnv)a0o_iqyjf!td#ehkcgd-hk&m)6^f%vg!j=%z0(sb0b3!3'
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 TELEGRAM_ADMIN_CHAT_ID = '-801091439'
-# TAWK_API_KEY = os.environ['TAWK_API_KEY'] TODO: This line will be deleted
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True if os.environ['DJANGO_DEBUG'] == 'True' else False
+# DEBUG = False
 SESSION_COOKIE_SECURE = not DEBUG
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['185.14.45.230:8001',
+                 '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -53,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'htmlmin.middleware.HtmlMinifyMiddleware',
+    'htmlmin.middleware.MarkRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'carkeys_project.urls'
@@ -79,30 +82,34 @@ WSGI_APPLICATION = 'carkeys_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.environ.get('DJANGO_DATABASE') == 'postgres':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'carkeyproject_db',
+            'USER': 'carkeyproject_user',
+            'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
     }
-}
+elif os.environ['DJANGO_DATABASE'] == 'sqlite':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
 

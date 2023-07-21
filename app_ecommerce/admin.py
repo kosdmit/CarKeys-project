@@ -41,6 +41,7 @@ class GoodsAdmin(BaseAdminMixin, admin.ModelAdmin):
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = super().get_fieldsets(request, obj)
+        fieldsets[1][1]['fields'].append('slug')
         fieldsets += [
             (None, {"fields": ["title", "parent", "description", "image",
                                ('price_prefix', 'price'),
@@ -49,6 +50,14 @@ class GoodsAdmin(BaseAdminMixin, admin.ModelAdmin):
 
         return fieldsets
 
+    def get_readonly_fields(self, request, obj=None):
+        readonly_fields = super().get_readonly_fields(request, obj)
+        readonly_fields += [
+            'slug',
+        ]
+
+        return readonly_fields
+
 @admin.register(Category)
 class CategoryAdmin(BaseAdminMixin, admin.ModelAdmin):
     list_display = ['num_id', 'title', 'parent', 'created_date', 'updated_date']
@@ -56,11 +65,20 @@ class CategoryAdmin(BaseAdminMixin, admin.ModelAdmin):
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = super().get_fieldsets(request, obj)
+        fieldsets[1][1]['fields'].append('slug')
         fieldsets += [
             (None, {"fields": ["title", "parent"]},),
         ]
 
         return fieldsets
+
+    def get_readonly_fields(self, request, obj=None):
+        readonly_fields = super().get_readonly_fields(request, obj)
+        readonly_fields += [
+            'slug',
+        ]
+
+        return readonly_fields
 
 
     def get_form(self, request, obj=None, **kwargs):

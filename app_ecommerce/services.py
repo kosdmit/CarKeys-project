@@ -27,8 +27,8 @@ def construct_message(request, obj=None):
 
         message = dedent(f"""
             Запрос клиента 
-            {"Пользователь: Имя - " + customer.name + ", Телефон - " + customer.phone_number if customer.phone_number 
-                else "Пользователь нажал кнопку заказать " + obj_name + ", но еще не предоставил свои контактные данные, проверьте наличие и другие характеристики."}
+            {str(customer) + ", Телефон - " + customer.phone_number if customer.phone_number 
+                else customer + " нажал кнопку заказать " + obj_name + ", но еще не предоставил свои контактные данные, проверьте наличие и другие характеристики."}
             Заказ: {obj_name} - {obj.title}
             {availability}
             Стоимость на сайте: {'от' if obj.price_prefix else ''} {obj.price}
@@ -40,7 +40,7 @@ def construct_message(request, obj=None):
         customer_message = request.POST.get('text')
         message = dedent(f"""
             Запрос клиента 
-            Пользователь: Имя - {customer.name}, Телефон - {customer.phone_number}
+            {customer}, Телефон - {customer.phone_number}
             {'Сообщение от пользователя: ' + customer_message if customer_message else ''}
             Пользователь заказал обратный звонок на сайте. Заказанные услуги отсутствуют.
             """)
