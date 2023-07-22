@@ -28,7 +28,7 @@ def construct_message(request, obj=None):
         message = dedent(f"""
             Запрос клиента 
             {str(customer) + ", Телефон - " + customer.phone_number if customer.phone_number 
-                else customer + " нажал кнопку заказать " + obj_name + ", но еще не предоставил свои контактные данные, проверьте наличие и другие характеристики."}
+                else str(customer) + " нажал кнопку заказать " + obj_name + ", но еще не предоставил свои контактные данные, проверьте наличие и другие характеристики."}
             Заказ: {obj_name} - {obj.title}
             {availability}
             Стоимость на сайте: {'от' if obj.price_prefix else ''} {obj.price}
