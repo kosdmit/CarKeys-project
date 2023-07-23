@@ -25,6 +25,7 @@ class CustomerForm(forms.ModelForm):
 class MessageForm(forms.ModelForm):
     text = forms.CharField(
         label='Сообщение:',
+        required=False,
         widget=forms.Textarea(attrs={'class': 'form-control',
                                      'rows': '3',
                                      'placeholder': 'Добавьте дополнительную информацию'})
