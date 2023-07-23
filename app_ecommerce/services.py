@@ -9,6 +9,10 @@ from app_ecommerce.models import Goods, Customer, Service
 from carkeys_project.settings import TELEGRAM_ADMIN_CHAT_ID
 
 
+# TODO: improve algorithm for searching actual order for customer
+# TODO: add functionality for bot, for example searching orders by customer
+
+
 def construct_message(request, obj=None):
     session_id = request.session.session_key
     customer = Customer.objects.get(session_id=session_id)

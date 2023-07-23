@@ -5,6 +5,10 @@ from app_ecommerce.models import Goods, Category, Parameter, Customer, Order, \
     Service, Message
 
 
+# TODO: add action for change status for order sets
+# TODO: add filters for orders, customers, goods and other
+
+
 class BaseAdminMixin:
     ordering = ('-num_id',)
 
