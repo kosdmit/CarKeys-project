@@ -14,7 +14,7 @@ class MainView(AddPriceListDataMixin, AddCustomerFormMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         context['goods_link'] = reverse_lazy('goods')
-        goods_list = Goods.objects.all()[:3]
+        goods_list = Goods.objects.filter(is_active=True)[:3]
         context['goods_list'] = goods_list
         context['page_obj'] = goods_list
 
