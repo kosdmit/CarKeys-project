@@ -6,10 +6,14 @@ class AddCustomerFormMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        session_id = self.request.session.session_key
-        customer = Customer.objects.filter(session_id=session_id).first()
+        customer_form_data = self.request.session.pop('customer_form_data', None)
+        if customer_form_data:
+            customer_form = CustomerForm(customer_form_data)
+        else:
+            session_id = self.request.session.session_key
+            customer = Customer.objects.filter(session_id=session_id).first()
+            customer_form = CustomerForm(instance=customer)
 
-        customer_form = CustomerForm(instance=customer)
         context['customer_form'] = customer_form
         context['message_form'] = MessageForm()
 

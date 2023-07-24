@@ -1,0 +1,5 @@
+{% for message in messages %}
+    <div class="alert {% if message.tags|wordcount == 1 %}alert-{{ message.tags }}{% else %}alert-warning{% endif %}" role="alert">
+      {{ message|safe }}
+    </div>
+{% endfor %}

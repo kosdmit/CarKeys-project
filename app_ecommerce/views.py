@@ -1,4 +1,4 @@
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, UpdateView
@@ -7,6 +7,7 @@ from app_ecommerce.mixins import AddCustomerFormMixin, AddPriceListDataMixin
 from app_ecommerce.models import Goods, Category, Order, Customer, Service, \
     Message
 from app_ecommerce.services import send_telegram_message, construct_message
+from carkeys_project.common_functions import remove_parameters_from_url
 
 
 # Create your views here.
@@ -142,5 +143,13 @@ class CustomerUpdateView(UpdateView):
 
     def get_success_url(self):
         return self.request.META['HTTP_REFERER'] + '?modal_id=success-modal'
+
+    def form_invalid(self, form):
+        self.request.session['customer_form_data'] = self.request.POST
+
+        return HttpResponseRedirect(
+            remove_parameters_from_url(self.request.META['HTTP_REFERER'], 'modal_id')
+            + f'?modal_id=get-contacts-modal'
+        )
 
 

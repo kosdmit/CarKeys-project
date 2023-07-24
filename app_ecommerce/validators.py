@@ -2,11 +2,12 @@ import phonenumbers
 from django.core.exceptions import ValidationError
 from phonenumbers import carrier
 from phonenumbers.phonenumberutil import number_type, NumberParseException
+from django.utils.translation import gettext_lazy as _
 
 
 def phone_number_validator(value):
-    message = 'Введите корректный номер телефона'
-    code = 'Incorrect phone number'
+    message = _('Incorrect phone number')
+    code = 'Phone number validation error'
     number = value
     try:
         carrier._is_mobile(number_type(phonenumbers.parse(number)))

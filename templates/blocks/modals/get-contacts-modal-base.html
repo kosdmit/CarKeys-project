@@ -9,10 +9,14 @@
   <form action="{% url 'customer_update' %}" method="post">
     {% csrf_token %}
     {% block modal-body-text %}{% endblock %}
+{#  TODO: add success messages  #}
+    {% include 'elements/messages.html' %}
+    {% include 'elements/forms/form_non_field_error_messages.html' %}
     {% for field in customer_form %}
       <div class="mb-3">
         <label class="form-label">{{ field.label }}</label>
         {{ field }}
+        {% include 'elements/forms/form_field_error_messages.html' %}
       </div>
     {% endfor %}
     {% for field in message_form %}
@@ -22,6 +26,7 @@
         {% if field.name == 'text' %}
           <div id="textHelp" class="form-text">Необязательное поле</div>
         {% endif %}
+        {% include 'elements/forms/form_field_error_messages.html' %}
       </div>
     {% endfor %}
 

@@ -193,3 +193,7 @@ msgstr "сообщения"
 #: .\models.py:197
 msgid "The message "
 msgstr "Cообщение "
+
+#: .\validators.py:9
+msgid "Incorrect phone number"
+msgstr "Неверный формат номера телефона"

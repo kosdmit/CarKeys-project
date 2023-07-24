@@ -123,7 +123,7 @@ class Parameter(Base):
 class Customer(Base):
     session_id = models.CharField(max_length=32, verbose_name=_('session'))
     name = models.CharField(max_length=150, verbose_name=_('name'))
-    phone_number = models.CharField(max_length=15, blank=True, null=True,
+    phone_number = models.CharField(max_length=20, blank=True, null=True,
                                     validators=[phone_number_validator, ], verbose_name=_('phone number'))
     last_visit = models.DateTimeField(auto_now=True, verbose_name=_('last visit'))
 
