@@ -2,11 +2,10 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from app_ecommerce.models import Goods, Category, Parameter, Customer, Order, \
-    Service, Message
+    Service, Message, Contact
 
 
 # TODO: add action for change status for order sets
-# TODO: add filters for orders, customers, goods and other
 
 
 class BaseAdminMixin:
@@ -42,6 +41,7 @@ class BaseAdminMixin:
 class GoodsAdmin(BaseAdminMixin, admin.ModelAdmin):
     list_display = ['num_id', 'title', 'parent', 'price', 'count', 'is_active']
     list_display_links = ['title']
+    list_filter = ['parent', 'is_active']
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = super().get_fieldsets(request, obj)
@@ -106,9 +106,38 @@ class ParameterAdmin(BaseAdminMixin, admin.ModelAdmin):
 
         return fieldsets
 
+
+@admin.register(Contact)
+class ContactAdmin(BaseAdminMixin, admin.ModelAdmin):
+    list_display = ['num_id', 'customer', 'num_id_customer_unique', 'name', 'phone_number']
+
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = super().get_fieldsets(request, obj)
+        fieldsets[1][1]['fields'].append('num_id_customer_unique')
+        fieldsets += [
+            (None, {"fields": ["name", "phone_number", "customer"]}),
+        ]
+
+        return fieldsets
+
+    def get_readonly_fields(self, request, obj=None):
+        readonly_fields = super().get_readonly_fields(request, obj)
+        readonly_fields += [
+            'num_id_customer_unique',
+        ]
+
+        return readonly_fields
+
+
+class ContactInlineAdmin(admin.TabularInline):
+    model = Contact
+    extra = 1
+
+
 @admin.register(Customer)
 class CustomerAdmin(BaseAdminMixin, admin.ModelAdmin):
     list_display = ['num_id', 'name', 'phone_number', 'last_visit', 'session_id']
+    inlines = [ContactInlineAdmin]
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = super().get_fieldsets(request, obj)
@@ -132,6 +161,7 @@ class CustomerAdmin(BaseAdminMixin, admin.ModelAdmin):
 class OrderAdmin(BaseAdminMixin, admin.ModelAdmin):
     list_display = ['num_id', 'customer', 'goods', 'service', 'status']
     list_display_links = ['customer']
+    list_filter = ['status', 'service']
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = super().get_fieldsets(request, obj)

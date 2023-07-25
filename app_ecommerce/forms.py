@@ -6,15 +6,16 @@ from app_ecommerce.models import Customer, Message
 class CustomerForm(forms.ModelForm):
     name = forms.CharField(
         label='Имя:',
-        widget=forms.TextInput(attrs={'class': 'form-control'})
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=False,
     )
 
     phone_number = forms.CharField(
         label='Телефон:',
+        required=True,
         widget=forms.TextInput(attrs={'class': 'form-control',
                                       'value': '+7',
                                       'placeholder': '+7'}),
-        required=False
     )
 
     class Meta:

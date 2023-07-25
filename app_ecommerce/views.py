@@ -5,7 +5,7 @@ from django.views.generic import ListView, UpdateView
 
 from app_ecommerce.mixins import AddCustomerFormMixin, AddPriceListDataMixin
 from app_ecommerce.models import Goods, Category, Order, Customer, Service, \
-    Message
+    Message, Contact
 from app_ecommerce.services import send_telegram_message, construct_message
 from carkeys_project.common_functions import remove_parameters_from_url
 
@@ -117,10 +117,10 @@ class CustomerUpdateView(UpdateView):
     fields = ['name', 'phone_number']
 
     def get_object(self, queryset=None):
-        session_id = self.request.session.session_key
-        if session_id:
+        try:
+            session_id = self.request.session.session_key
             obj = Customer.objects.get(session_id=session_id)
-        else:
+        except Customer.DoesNotExist:
             self.request.session.create()
             session_id = self.request.session.session_key
             obj = Customer.objects.create(session_id=session_id)
@@ -135,6 +135,10 @@ class CustomerUpdateView(UpdateView):
 
         if form.data.get('text'):
             message = Message.objects.create(customer=self.object, text=form.data['text'])
+
+        contact = Contact.objects.create(customer=self.object,
+                                         name=self.object.name,
+                                         phone_number=self.object.phone_number)
 
         service_message = construct_message(request=self.request)
         response = send_telegram_message(service_message)

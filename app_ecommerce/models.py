@@ -4,10 +4,9 @@ from autoslug import AutoSlugField
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import Q, AutoField
-from django.db.models.fields import checks
-from django.dispatch import receiver
+from django.db.models import Q
 from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
 
 from app_ecommerce.models_mixins import CompressImageBeforeSaveMixin
@@ -122,9 +121,10 @@ class Parameter(Base):
 
 class Customer(Base):
     session_id = models.CharField(max_length=32, verbose_name=_('session'))
-    name = models.CharField(max_length=150, verbose_name=_('name'))
+    name = models.CharField(max_length=150, verbose_name=_('name'), blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True,
-                                    validators=[phone_number_validator, ], verbose_name=_('phone number'))
+                                    validators=[phone_number_validator, ],
+                                    verbose_name=_('phone number'))
     last_visit = models.DateTimeField(auto_now=True, verbose_name=_('last visit'))
 
     class Meta:
@@ -135,6 +135,42 @@ class Customer(Base):
         name = self.name if self.name else _('unknown')
         number = _('#') + str(self.num_id)
         return str(_('customer')).title() + ' ' + number + ' - ' + name.title()
+
+    def save(self, *args, **kwargs):
+        if not self.name:
+            for contact in self.contact_set.order_by('-updated_date'):
+                if contact.name:
+                    self.name = contact.name
+                    break
+
+        super().save(*args, **kwargs)
+
+
+class Contact(Base):
+    num_id_customer_unique = models.IntegerField(editable=False, verbose_name=_('the customer`s contact #'))
+    customer = models.ForeignKey('Customer', on_delete=models.CASCADE, verbose_name=_('customer'))
+
+    name = models.CharField(max_length=150, verbose_name=_('name'), blank=True, null=True)
+    phone_number = models.CharField(max_length=20,
+                                    validators=[phone_number_validator, ],
+                                    verbose_name=_('phone number'))
+
+    class Meta:
+        verbose_name = _('contact')
+        verbose_name_plural = _('contacts')
+
+    def __str__(self):
+        return f"{_('contact')} {_('#')}{str(self.num_id_customer_unique)}  {_('for')}  {str(self.customer)}"
+
+    def save(self, *args, **kwargs):
+        if not self.num_id_customer_unique:
+            max_id = self.__class__.objects.filter(customer=self.customer).aggregate(max_id=models.Max('num_id_customer_unique'))['max_id']
+            if max_id is not None:
+                self.num_id_customer_unique = max_id + 1
+            else:
+                self.num_id_customer_unique = 1
+        super().save(*args, **kwargs)
+
 
 
 class Order(Base):
