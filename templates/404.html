@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <section class="hero-section">
+    <div class="container">
+      <div class="row figure-holder page-not-found d-block">
+        {% include 'blocks/page-title.html' with text='Страница не найдена'%}
+
+        <h2 class="display-1 text-center my-5">404</h2>
+        <p class="mt-5 col-lg-6">Проверьте правильность url адреса в адресной строке браузера.</p>
+        <p class="mb-5 col-lg-6">Если произошла ошибка, пожалуйста, напишите об этом на нашу почту -
+          <a href="mailto:carkeysamara@bk.ru">carkeysamara@bk.ru</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}
+
+

@@ -12,6 +12,10 @@
 		background: url('/static/images/hero-figure.png') no-repeat right bottom;
 		background-size: 480px auto;
 		min-height: 500px;
+
+		&.page-not-found {
+			min-height: 570px;
+		}
 	}
 }
 
@@ -131,6 +135,10 @@
 			min-height: 460px;
 			background-position: right bottom;
 			background-size: 360px auto;
+
+			&.page-not-found {
+				min-height: 530px;
+			}
 		}
 	}
 
