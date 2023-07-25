@@ -59,11 +59,11 @@ class GoodsListView(AddPriceListDataMixin, AddCustomerFormMixin, ListView):
     def get_queryset(self):
         if self.category_object:
             query_set = self.category_object.get_goods()
-            query_set = query_set.filter(is_active=True)
+            query_set = query_set.filter(is_active=True).order_by('-is_available')
             return query_set
         else:
             query_set = super().get_queryset()
-            query_set = query_set.filter(is_active=True)
+            query_set = query_set.filter(is_active=True).order_by('-is_available')
             return query_set
 
 

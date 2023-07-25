@@ -59,6 +59,7 @@ class Goods(CompressImageBeforeSaveMixin, Base):
     price = models.IntegerField(verbose_name=_('price'))
     price_prefix = models.BooleanField(default=False, verbose_name=_('price prefix'))
     count = models.IntegerField(verbose_name=_('count'))
+    is_available = models.BooleanField(editable=False)
     is_active = models.BooleanField(default=False, verbose_name=_('is active'))
 
     class Meta:
@@ -67,6 +68,10 @@ class Goods(CompressImageBeforeSaveMixin, Base):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.is_available = bool(self.count)
+        super().save(*args, **kwargs)
 
 @receiver(post_delete, sender=Goods)
 def submission_delete(sender, instance, **kwargs):
