@@ -106,13 +106,24 @@ window.addEventListener('load', function() {
 const modals = document.querySelectorAll('.modal')
 for (let i = 0 ; i < modals.length; i++) {
   modals[i].addEventListener('hide.bs.modal', event => {
-    removeUrlParameters()
+    let url = new URL(window.location.href);
+    url.searchParams.delete('modal_id')
+    window.history.replaceState({}, document.title, url.toString());
+  })
+  modals[i].addEventListener('show.bs.modal', event => {
+    let urlParams = new URLSearchParams(window.location.search);
+    if (!urlParams.has('modal_id')) {
+      addUrlParam('modal_id', modals[i].getAttribute('id'))
+    }
   })
 }
 
-function removeUrlParameters() {
-  let urlWithoutParameters = window.location.origin + window.location.pathname;
-  window.history.replaceState({}, document.title, urlWithoutParameters);
+
+function addUrlParam(key, value) {
+    var url = new URL(window.location.href);
+    url.searchParams.append(key, value);
+
+    window.history.pushState({}, '', url.toString());
 }
 
 
