@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
 
 from app_ecommerce.models_mixins import CompressImageBeforeSaveMixin
@@ -72,6 +73,12 @@ class Goods(CompressImageBeforeSaveMixin, Base):
     def save(self, *args, **kwargs):
         self.is_available = bool(self.count)
         super().save(*args, **kwargs)
+
+    def image_tag(self):
+        return mark_safe(
+            '<img src="/media/%s" width="150" height="150" />' % (self.image))
+
+    image_tag.short_description = _('Image preview')
 
 @receiver(post_delete, sender=Goods)
 def submission_delete(sender, instance, **kwargs):

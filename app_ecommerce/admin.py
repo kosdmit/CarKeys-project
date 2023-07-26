@@ -47,7 +47,8 @@ class GoodsAdmin(BaseAdminMixin, admin.ModelAdmin):
         fieldsets = super().get_fieldsets(request, obj)
         fieldsets[1][1]['fields'].append('slug')
         fieldsets += [
-            (None, {"fields": ["title", "parent", "description", "image",
+            (None, {"fields": ["title", "parent", "description",
+                               ("image", "image_tag"),
                                ('price_prefix', 'price'),
                                ('is_active', 'count')]},),
         ]
@@ -57,7 +58,7 @@ class GoodsAdmin(BaseAdminMixin, admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = super().get_readonly_fields(request, obj)
         readonly_fields += [
-            'slug',
+            'slug', 'image_tag'
         ]
 
         return readonly_fields
