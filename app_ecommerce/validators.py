@@ -9,6 +9,8 @@ def phone_number_validator(value):
     message = _('Incorrect phone number')
     code = 'Phone number validation error'
     number = value
+    if number[0] == '8':
+        number = '+7' + number[1:]
     try:
         carrier._is_mobile(number_type(phonenumbers.parse(number)))
     except NumberParseException:
