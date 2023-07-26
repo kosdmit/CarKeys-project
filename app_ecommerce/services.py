@@ -2,10 +2,10 @@ import os
 from textwrap import dedent
 
 import requests
-from django.http import Http404
 from django.urls import reverse
 
-from app_ecommerce.models import Goods, Customer, Service
+from app_ecommerce.models import Goods, Customer
+from carkeys_project import settings
 from carkeys_project.settings import TELEGRAM_ADMIN_CHAT_ID
 
 
@@ -25,7 +25,7 @@ def construct_message(request, obj=None):
     if obj:
         obj_class = type(obj)
         obj_name = 'товар' if obj_class == Goods else 'услуга'
-        link = f'{reverse("goods") + "?modal=detail-view-modal-" + str(obj.pk)}' if obj_class == Goods else ''
+        link = f'https://{settings.ALLOWED_HOSTS[0]}{reverse("goods") + "?modal=detail-view-modal-" + str(obj.pk)}' if obj_class == Goods else ''
         availability = f'Наличие на сайте: {obj.count} ' if obj_class == Goods else ''
         customer_message = request.POST.get('text')
 
