@@ -1,5 +1,6 @@
 import os
 from textwrap import dedent
+from urllib.parse import urlparse
 
 import requests
 from django.urls import reverse
@@ -17,12 +18,22 @@ def construct_message(request, obj=None):
     session_id = request.session.session_key
     customer = Customer.objects.get(session_id=session_id)
 
+    parsed_url = urlparse(request.META['HTTP_REFERER'])
+    parsed_query = parsed_url.query
+    modal_id = ''
+    if parsed_query:
+        query_params = parsed_query.split('&')
+        for param in query_params:
+            if param.split('=')[0] == 'modal_id':
+                modal_id = param.split('=')[1]
+                break
+
     if not obj:
         last_order = customer.order_set.last()
         if last_order:
             obj = last_order.goods or last_order.service
 
-    if obj:
+    if obj and modal_id != 'callback-modal':
         obj_class = type(obj)
         obj_name = 'товар' if obj_class == Goods else 'услуга'
         link = f'https://{settings.ALLOWED_HOSTS[0]}{reverse("goods") + "?modal=detail-view-modal-" + str(obj.pk)}' if obj_class == Goods else ''
@@ -38,6 +49,23 @@ def construct_message(request, obj=None):
             Стоимость на сайте: {'от' if obj.price_prefix else ''} {obj.price}
             {link}
             {'Сообщение от пользователя: ' + customer_message if customer_message else ''}
+            """)
+
+    elif obj:
+        obj_class = type(obj)
+        obj_name = 'товар' if obj_class == Goods else 'услуга'
+        link = f'https://{settings.ALLOWED_HOSTS[0]}{reverse("goods") + "?modal=detail-view-modal-" + str(obj.pk)}' if obj_class == Goods else ''
+        availability = f'Наличие на сайте: {obj.count} ' if obj_class == Goods else ''
+        customer_message = request.POST.get('text')
+        message = dedent(f"""
+            Запрос клиента 
+            {customer}, Телефон - {customer.phone_number}
+            {'Сообщение от пользователя: ' + customer_message if customer_message else ''}
+            Пользователь заказал обратный звонок на сайте.
+            Последний заказ пользователя: {obj_name} - {obj.title}
+            {availability}
+            Стоимость на сайте: {'от' if obj.price_prefix else ''} {obj.price}
+            {link}
             """)
 
     elif customer.phone_number:

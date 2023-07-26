@@ -8,6 +8,8 @@ from app_ecommerce.models import Goods, Category, Order, Customer, Service, \
     Message, Contact
 from app_ecommerce.services import send_telegram_message, construct_message
 
+from carkeys_project.common_functions import remove_parameters_from_url
+
 
 # Create your views here.
 class GoodsListView(AddPriceListDataMixin, AddCustomerFormMixin, ListView):
@@ -145,7 +147,8 @@ class CustomerUpdateView(UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return self.request.META['HTTP_REFERER'] + '?modal_id=success-modal'
+        return remove_parameters_from_url(self.request.META['HTTP_REFERER'], 'modal_id') + \
+            '?modal_id=success-modal'
 
     def form_invalid(self, form):
         self.request.session['customer_form_data'] = self.request.POST
