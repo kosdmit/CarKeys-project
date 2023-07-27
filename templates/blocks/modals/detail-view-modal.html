@@ -3,7 +3,9 @@
 {% block modal-id %}detail-view-modal-{{ goods.pk }}{% endblock %}
 
 {% block title-image %}
-  <img src="{{ goods.image.url }}" alt="goods image" class="rounded-top-2">
+  {% if goods.image %}
+    <img src="{{ goods.image.url }}" alt="goods image" class="rounded-top-2">
+  {% endif %}
 {% endblock %}
 
 {% block modal-header %}
