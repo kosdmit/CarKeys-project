@@ -3,4 +3,9 @@
     {% include 'app_landing/elements/ecommerce-item.html' %}
     {% include 'blocks/modals/detail-view-modal.html' %}
   {% endfor %}
+  {% if page_obj|length == 0 %}
+    <p class="my-5">В этой категории пока нет доступных товаров.
+      <a href="{% url 'goods' %}">Показать все</a>
+    </p>
+  {% endif %}
 </div>
