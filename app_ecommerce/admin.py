@@ -138,7 +138,7 @@ class ContactInlineAdmin(admin.TabularInline):
 @admin.register(Customer)
 class CustomerAdmin(BaseAdminMixin, admin.ModelAdmin):
     list_display = ['num_id', 'name', 'phone_number', 'last_visit', 'session_id']
-    inlines = [ContactInlineAdmin]
+    inlines = [ContactInlineAdmin]  # TODO: add Messages, Orders inlines
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = super().get_fieldsets(request, obj)

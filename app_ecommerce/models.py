@@ -75,6 +75,7 @@ class Goods(CompressImageBeforeSaveMixin, Base):
         super().save(*args, **kwargs)
 
     def image_tag(self):
+        # TODO: add right proportions support for image preview
         return mark_safe(
             '<img src="/media/%s" width="150" height="150" />' % (self.image))
 
