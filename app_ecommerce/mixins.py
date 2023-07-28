@@ -3,6 +3,7 @@ from app_ecommerce.models import Customer, Service
 
 
 class AddCustomerFormMixin:
+    # TODO: add unit test for this
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -24,7 +25,7 @@ class AddPriceListDataMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        price_list = Service.objects.all()
+        price_list = Service.objects.filter(is_active=True)
         context['price_list'] = price_list
 
         return context

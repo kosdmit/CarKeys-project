@@ -1,5 +1,6 @@
 from django.http import Http404, JsonResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import ListView, UpdateView
 
@@ -7,7 +8,6 @@ from app_ecommerce.mixins import AddCustomerFormMixin, AddPriceListDataMixin
 from app_ecommerce.models import Goods, Category, Order, Customer, Service, \
     Message, Contact
 from app_ecommerce.services import send_telegram_message, construct_message
-
 from carkeys_project.common_functions import remove_parameters_from_url
 
 
@@ -48,9 +48,9 @@ class GoodsListView(AddPriceListDataMixin, AddCustomerFormMixin, ListView):
             ])
 
         if self.category_object:
-            breadcrumbs.append([self.category_object.title, ''])
+            breadcrumbs.append([self.category_object.title, None])
         else:
-            breadcrumbs.append(['Все категории', ''])
+            breadcrumbs.append([_('All categories'), None])
 
         context['breadcrumbs'] = breadcrumbs
 
