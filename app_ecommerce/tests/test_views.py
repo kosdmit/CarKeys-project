@@ -1,3 +1,4 @@
+from unittest.mock import patch
 import pytest
 from django.test import Client
 from django.urls import reverse
@@ -5,8 +6,15 @@ from django.utils.translation import gettext_lazy as _
 from mixer.backend.django import mixer
 
 from app_ecommerce.forms import CustomerForm, MessageForm
-from app_ecommerce.models import Category, Goods, Service, Customer
+from app_ecommerce.models import Category, Goods, Service, Customer, Order
 from app_ecommerce.views import GoodsListView
+from app_ecommerce.tests.mocks import mock_construct_message, mock_send_telegram_message
+
+
+TEST_DATA = {'customer_name': 'Leonid',
+             'customer_phone_number': '+79277777777',
+             'top_level_category_title': 'Top category',
+             'second_level_category_title': 'Second category'}
 
 
 # Create your tests here.
@@ -15,11 +23,6 @@ class TestGoodsListView:
     def setup(self):
         self.client = Client()
         self.paginate_by = GoodsListView.paginate_by
-
-        self.test_data = {'customer_name': 'Leonid',
-                          'customer_phone_number': '+79277777777',
-                          'top_level_category_title': 'Top category',
-                          'second_level_category_title': 'Second category'}
 
     @pytest.fixture()
     def prepare_goods(self, request):
@@ -30,7 +33,7 @@ class TestGoodsListView:
         self.unavailable_goods = mixer.cycle(2).blend(Goods, parent=mixer.select, is_active=True, count=0)
         self.disabled_goods = mixer.blend(Goods, parent=mixer.select, is_active=False)
 
-        self.selected_top_level_category = mixer.blend(Category, parent=None, title=self.test_data['top_level_category_title'])
+        self.selected_top_level_category = mixer.blend(Category, parent=None, title=TEST_DATA['top_level_category_title'])
         self.top_level_categories.append(self.selected_top_level_category)
 
     def check_top_level_categories_in_context(self):
@@ -126,8 +129,8 @@ class TestGoodsListView:
 
     def test_goods_list_view_with_second_level_category(self, prepare_goods, prepare_services):
         selected_second_level_category = mixer.blend(Category,
-                                                          parent=self.selected_top_level_category,
-                                                          title=self.test_data['second_level_category_title'])
+                                                     parent=self.selected_top_level_category,
+                                                     title=TEST_DATA['second_level_category_title'])
 
         top_level_goods = mixer.blend(Goods,
                                       parent=self.selected_top_level_category,
@@ -174,8 +177,8 @@ class TestGoodsListView:
 
     def test_customer_form_with_session_data(self):
         session = self.client.session
-        session['customer_form_data'] = {'name': self.test_data['customer_name'],
-                                         'phone_number': self.test_data['customer_phone_number']}
+        session['customer_form_data'] = {'name': TEST_DATA['customer_name'],
+                                         'phone_number': TEST_DATA['customer_phone_number']}
         session.save()
 
         response = self.client.get(reverse('goods'))
@@ -184,24 +187,24 @@ class TestGoodsListView:
         assert 'customer_form' in response.context_data
         assert isinstance(self.context['customer_form'], CustomerForm)
         assert self.context['customer_form'].is_bound  # This checks that the form was bound with data
-        assert self.context['customer_form'].data['name'] == self.test_data['customer_name']
-        assert self.context['customer_form'].data['phone_number'] == self.test_data['customer_phone_number']
+        assert self.context['customer_form'].data['name'] == TEST_DATA['customer_name']
+        assert self.context['customer_form'].data['phone_number'] == TEST_DATA['customer_phone_number']
 
         self.check_message_form_in_context()
 
     def test_customer_form_with_customer_in_db(self):
         customer = mixer.blend(Customer,
                                session_id=self.client.session.session_key,
-                               name=self.test_data['customer_name'],
-                               phone_number=self.test_data['customer_phone_number'])
+                               name=TEST_DATA['customer_name'],
+                               phone_number=TEST_DATA['customer_phone_number'])
 
         response = self.client.get(reverse('goods'))
         self.context = response.context_data
 
         assert 'customer_form' in self.context
         assert isinstance(self.context['customer_form'], CustomerForm)
-        assert self.context['customer_form'].instance.name == self.test_data['customer_name']
-        assert self.context['customer_form'].instance.phone_number == self.test_data['customer_phone_number']
+        assert self.context['customer_form'].instance.name == TEST_DATA['customer_name']
+        assert self.context['customer_form'].instance.phone_number == TEST_DATA['customer_phone_number']
 
     def test_add_customer_form_mixin_with_no_customer(self):
         response = self.client.get(reverse('goods'))
@@ -210,5 +213,51 @@ class TestGoodsListView:
         assert 'customer_form' in self.context
         assert isinstance(self.context['customer_form'], CustomerForm)
         assert not self.context['customer_form'].is_bound  # This checks that the form was not bound with data
+
+    def test_post_method(self):
+        response = self.client.post(reverse('goods'))
+        assert response.status_code == 405
+
+
+@pytest.mark.django_db
+class TestOrderCreateView:
+    def setup(self):
+        self.client = Client()
+
+    @pytest.fixture()
+    def prepare_objects(self):
+        self.displayed_goods = mixer.cycle(3).blend(Goods, is_active=True)
+        self.disabled_goods = mixer.cycle(2).blend(Goods, is_active=False)
+        self.active_services = mixer.cycle(2).blend(Service, is_active=True)
+        self.disabled_services = mixer.cycle(1).blend(Service, is_active=False)
+
+    # @patch('app_ecomerce.views.construct_message', new=mock_construct_message)
+    # @patch('app_ecomerce.views.send_telegram_message', new=mock_send_telegram_message)
+    # def test_order_create_view_with_existing_customer(self):
+    #     goods = mixer.blend(Goods)
+    #     customer = mixer.blend(Customer)
+    #     session = self.client.session
+    #     session['session_key'] = customer.session_id
+    #     session.save()
+    #
+    #     response = self.client.post(reverse('order_create'), data={'obj_id': goods.pk, 'obj_type': 'Goods'})
+    #
+    #     assert response.status_code == 200
+    #     assert Order.objects.filter(goods=goods).exists()
+
+    @patch('app_ecommerce.views.construct_message', new=mock_construct_message)
+    @patch('app_ecommerce.views.send_telegram_message', new=mock_send_telegram_message)
+    def test_post_correct_data_with_new_customer(self):
+        selected_obj = self.displayed_goods.first()
+
+        response = self.client.post(reverse('order_create'), data={'obj_id': selected_obj.pk, 'obj_type': type(selected_obj).__name__})
+        session_id = self.client.session.session_key
+        customer = Customer.objects.filter(session_id=session_id).first()
+        order = Order.objects.filter(customer=customer, goods=goods).first()
+
+        assert response.status_code == 200
+
+        assert Order.objects.filter(goods=goods).exists()
+        assert
 
 
