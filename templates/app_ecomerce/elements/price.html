@@ -1,4 +1,7 @@
-<span class="fs-4 me-1">{{ goods.price }} ₽</span>
+<span class="fs-4 me-1">
+  {% if goods.price_prefix %}<span class="fs-5 me-1">от</span>{% endif %}
+  {{ goods.price }} ₽
+</span>
 {% if goods.count > 0 %}
   <span class="badge goods-available text-bg-primary rounded-pill m-0 me-auto text-white align-self-center">В наличии</span>
 {% elif goods.count == 0 %}
