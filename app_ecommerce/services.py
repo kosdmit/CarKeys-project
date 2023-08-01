@@ -9,14 +9,18 @@ from app_ecommerce.models import Goods, Customer
 from carkeys_project import settings
 from carkeys_project.settings import TELEGRAM_ADMIN_CHAT_ID
 
-
 # TODO: improve algorithm for searching actual order for customer
 # TODO: add functionality for bot, for example searching orders by customer
 
+MESSAGE_LINES = {
+    'callback_order': 'Пользователь заказал обратный звонок на сайте.',
+    'no_obj': 'Заказанные услуги отсутствуют.',
+    'no_phone_number': ", но еще не предоставил свои контактные данные, проверьте наличие и другие характеристики."}
 
 def construct_message(request, obj=None):
     session_id = request.session.session_key
     customer = Customer.objects.get(session_id=session_id)
+    customer_message = request.POST.get('text')
 
     parsed_url = urlparse(request.META['HTTP_REFERER'])
     parsed_query = parsed_url.query
@@ -33,17 +37,17 @@ def construct_message(request, obj=None):
         if last_order:
             obj = last_order.goods or last_order.service
 
-    if obj and modal_id != 'callback-modal':
+    if obj:
         obj_class = type(obj)
         obj_name = 'товар' if obj_class == Goods else 'услуга'
-        link = f'https://{settings.ALLOWED_HOSTS[0]}{reverse("goods") + "?modal=detail-view-modal-" + str(obj.pk)}' if obj_class == Goods else ''
+        link = f'https://{settings.ALLOWED_HOSTS[0]}{reverse("goods") + "?modal_id=detail-view-modal-" + str(obj.pk)}' if obj_class == Goods else ''
         availability = f'Наличие на сайте: {obj.count} ' if obj_class == Goods else ''
-        customer_message = request.POST.get('text')
 
+    if obj and modal_id != 'callback-modal':
         message = dedent(f"""
             Запрос клиента 
             {str(customer) + ", Телефон - " + customer.phone_number if customer.phone_number 
-                else str(customer) + " нажал кнопку заказать " + obj_name + ", но еще не предоставил свои контактные данные, проверьте наличие и другие характеристики."}
+                else str(customer) + " нажал кнопку заказать " + obj_name + MESSAGE_LINES['no_phone_number']}
             Заказ: {obj_name} - {obj.title}
             {availability}
             Стоимость на сайте: {'от' if obj.price_prefix else ''} {obj.price}
@@ -52,16 +56,11 @@ def construct_message(request, obj=None):
             """)
 
     elif obj:
-        obj_class = type(obj)
-        obj_name = 'товар' if obj_class == Goods else 'услуга'
-        link = f'https://{settings.ALLOWED_HOSTS[0]}{reverse("goods") + "?modal=detail-view-modal-" + str(obj.pk)}' if obj_class == Goods else ''
-        availability = f'Наличие на сайте: {obj.count} ' if obj_class == Goods else ''
-        customer_message = request.POST.get('text')
         message = dedent(f"""
             Запрос клиента 
             {customer}, Телефон - {customer.phone_number}
             {'Сообщение от пользователя: ' + customer_message if customer_message else ''}
-            Пользователь заказал обратный звонок на сайте.
+            {MESSAGE_LINES['callback_order']}
             Последний заказ пользователя: {obj_name} - {obj.title}
             {availability}
             Стоимость на сайте: {'от' if obj.price_prefix else ''} {obj.price}
@@ -69,13 +68,12 @@ def construct_message(request, obj=None):
             """)
 
     elif customer.phone_number:
-        customer_message = request.POST.get('text')
         message = dedent(f"""
-            Запрос клиента 
-            {customer}, Телефон - {customer.phone_number}
-            {'Сообщение от пользователя: ' + customer_message if customer_message else ''}
-            Пользователь заказал обратный звонок на сайте. Заказанные услуги отсутствуют.
-            """)
+        Запрос клиента 
+        {customer}, Телефон - {customer.phone_number}
+        {'Сообщение от пользователя: ' + customer_message if customer_message else ''}
+        {MESSAGE_LINES['callback_order']} {MESSAGE_LINES['no_obj']}
+        """)
     else:
         message = "Ошибка при формировании сообщения"
 

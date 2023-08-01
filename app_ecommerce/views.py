@@ -72,7 +72,10 @@ class OrderCreateView(View):
     def post(self, request, *args, **kwargs):
         obj_id = request.POST['obj_id']
         obj_class_name = request.POST['obj_type']
-        obj_class = globals()[obj_class_name]
+        try:
+            obj_class = globals()[obj_class_name]
+        except KeyError:
+            raise Http404
 
         try:
             obj = obj_class.objects.get(pk=obj_id)
@@ -154,5 +157,8 @@ class CustomerUpdateView(UpdateView):
         self.request.session['customer_form_data'] = self.request.POST
 
         return HttpResponseRedirect(self.request.META['HTTP_REFERER'])
+
+    def get(self, request, *args, **kwargs):
+        raise Http404
 
 

@@ -1,4 +1,6 @@
+import json
 from unittest.mock import patch
+
 import pytest
 from django.test import Client
 from django.urls import reverse
@@ -6,35 +8,21 @@ from django.utils.translation import gettext_lazy as _
 from mixer.backend.django import mixer
 
 from app_ecommerce.forms import CustomerForm, MessageForm
-from app_ecommerce.models import Category, Goods, Service, Customer, Order
+from app_ecommerce.models import Category, Goods, Service, Customer, Order, \
+    Message, Contact
+from app_ecommerce.tests.data import TEST_DATA
+from app_ecommerce.tests.mixins import CreateTestObjectsMixin
+from app_ecommerce.tests.mocks import mock_construct_message, \
+    mock_send_telegram_message
 from app_ecommerce.views import GoodsListView
-from app_ecommerce.tests.mocks import mock_construct_message, mock_send_telegram_message
-
-
-TEST_DATA = {'customer_name': 'Leonid',
-             'customer_phone_number': '+79277777777',
-             'top_level_category_title': 'Top category',
-             'second_level_category_title': 'Second category'}
 
 
 # Create your tests here.
 @pytest.mark.django_db
-class TestGoodsListView:
+class TestGoodsListView(CreateTestObjectsMixin):
     def setup(self):
         self.client = Client()
         self.paginate_by = GoodsListView.paginate_by
-
-    @pytest.fixture()
-    def prepare_goods(self, request):
-        self.top_level_categories = mixer.cycle(5).blend(Category, parent=None)
-        self.second_level_categories = [mixer.cycle(3).blend(Category, parent=cat) for cat in self.top_level_categories]
-
-        self.available_goods = mixer.cycle(10).blend(Goods, parent=mixer.select, is_active=True, count=1)
-        self.unavailable_goods = mixer.cycle(2).blend(Goods, parent=mixer.select, is_active=True, count=0)
-        self.disabled_goods = mixer.blend(Goods, parent=mixer.select, is_active=False)
-
-        self.selected_top_level_category = mixer.blend(Category, parent=None, title=TEST_DATA['top_level_category_title'])
-        self.top_level_categories.append(self.selected_top_level_category)
 
     def check_top_level_categories_in_context(self):
         assert 'top_level_categories' in self.context
@@ -59,11 +47,6 @@ class TestGoodsListView:
             assert self.context['paginator'].object_list[i].is_available is True
         for i in range(available_goods_count, displayed_goods_count):
             assert self.context['paginator'].object_list[i].is_available is False
-
-    @pytest.fixture()
-    def prepare_services(self, request):
-        self.active_services = mixer.cycle(3).blend(Service, is_active=True)
-        self.disabled_services = mixer.blend(Service, is_active=False)
 
     def check_services_count_in_context(self):
         assert len(self.context['price_list']) == len(self.active_services)
@@ -231,33 +214,137 @@ class TestOrderCreateView:
         self.active_services = mixer.cycle(2).blend(Service, is_active=True)
         self.disabled_services = mixer.cycle(1).blend(Service, is_active=False)
 
-    # @patch('app_ecomerce.views.construct_message', new=mock_construct_message)
-    # @patch('app_ecomerce.views.send_telegram_message', new=mock_send_telegram_message)
-    # def test_order_create_view_with_existing_customer(self):
-    #     goods = mixer.blend(Goods)
-    #     customer = mixer.blend(Customer)
-    #     session = self.client.session
-    #     session['session_key'] = customer.session_id
-    #     session.save()
-    #
-    #     response = self.client.post(reverse('order_create'), data={'obj_id': goods.pk, 'obj_type': 'Goods'})
-    #
-    #     assert response.status_code == 200
-    #     assert Order.objects.filter(goods=goods).exists()
-
     @patch('app_ecommerce.views.construct_message', new=mock_construct_message)
     @patch('app_ecommerce.views.send_telegram_message', new=mock_send_telegram_message)
-    def test_post_correct_data_with_new_customer(self):
-        selected_obj = self.displayed_goods.first()
+    def test_post_correct_data_with_new_customer(self, prepare_objects):
+        selected_obj = self.displayed_goods[0]
 
         response = self.client.post(reverse('order_create'), data={'obj_id': selected_obj.pk, 'obj_type': type(selected_obj).__name__})
         session_id = self.client.session.session_key
         customer = Customer.objects.filter(session_id=session_id).first()
-        order = Order.objects.filter(customer=customer, goods=goods).first()
+        order = Order.objects.filter(customer=customer, goods=selected_obj).first()
 
         assert response.status_code == 200
 
-        assert Order.objects.filter(goods=goods).exists()
-        assert
+        assert customer
+        assert order
+        assert str(selected_obj.pk) in self.client.session['ordered_goods']
+        assert json.loads(response.content.decode())['next'] == 'get-contacts-modal'
+
+    @patch('app_ecommerce.views.construct_message', new=mock_construct_message)
+    @patch('app_ecommerce.views.send_telegram_message', new=mock_send_telegram_message)
+    def test_post_correct_data_view_with_existing_customer(self, prepare_objects):
+        selected_obj = self.displayed_goods[0]
+        session_id = self.client.session.session_key
+        customer = Customer.objects.create(session_id=session_id,
+                                           name=TEST_DATA['customer_name'],
+                                           phone_number=TEST_DATA['customer_phone_number'])
+        ordered_goods = [str(goods.pk) for goods in self.displayed_goods if goods != selected_obj]
+        session = self.client.session
+        session['ordered_goods'] = ordered_goods
+        session.save()
+
+        response = self.client.post(reverse('order_create'), data={'obj_id': selected_obj.pk, 'obj_type': type(selected_obj).__name__})
+
+        assert response.status_code == 200
+
+        assert Order.objects.filter(goods=selected_obj, customer=customer).exists()
+        assert str(selected_obj.pk) in self.client.session['ordered_goods']
+        assert set([str(goods.pk) for goods in self.displayed_goods]) == set(self.client.session['ordered_goods'])
+        assert json.loads(response.content.decode())['next'] == 'success-modal'
+
+    def test_post_invalid_data(self, prepare_objects):
+        selected_obj = self.displayed_goods[0]
+        response = self.client.post(reverse('order_create'), data={'obj_id': selected_obj.pk,
+                                                                   'obj_type': 'unexpectet_type'})
+
+        assert response.status_code == 404
+
+    def test_get_method(self):
+        response = self.client.get(reverse('order_create'))
+
+        assert response.status_code == 404
+
+
+@pytest.mark.django_db
+class TestCustomerUpdateView:
+    def setup(self):
+        self.client = Client()
+
+    def check_response(self):
+        assert self.response.status_code == 302
+        assert 'modal_id=success-modal' in self.response.url
+
+    def check_objects(self):
+        assert Customer.objects.filter(name=TEST_DATA['customer_name'],
+                                       phone_number=TEST_DATA['customer_phone_number']).exists()
+
+        customer = Customer.objects.get(name=TEST_DATA['customer_name'],
+                                        phone_number=TEST_DATA['customer_phone_number'])
+        assert Message.objects.filter(customer=customer, text=TEST_DATA['customer_message']).exists()
+        assert Contact.objects.filter(customer=customer,
+                                      name=TEST_DATA['customer_name'],
+                                      phone_number=TEST_DATA['customer_phone_number']).exists()
+
+    @patch('app_ecommerce.views.construct_message', new=mock_construct_message)
+    @patch('app_ecommerce.views.send_telegram_message', new=mock_send_telegram_message)
+    def test_post_correct_data_with_new_customer(self):
+        self.response = self.client.post(
+            reverse('customer_update'),
+            data={'name': TEST_DATA['customer_name'],
+                  'phone_number': TEST_DATA['customer_phone_number'],
+                  'text': TEST_DATA['customer_message']},
+            HTTP_REFERER=reverse('goods')
+        )
+
+        self.check_response()
+        self.check_objects()
+
+    @patch('app_ecommerce.views.construct_message', new=mock_construct_message)
+    @patch('app_ecommerce.views.send_telegram_message', new=mock_send_telegram_message)
+    def test_post_correct_data_with_existing_customer(self):
+        session_id = self.client.session.session_key
+        customer = mixer.blend(Customer, session_id=session_id)
+
+        self.response = self.client.post(
+            reverse('customer_update'),
+            data={'name': TEST_DATA['customer_name'],
+                  'phone_number': TEST_DATA['customer_phone_number'],
+                  'text': TEST_DATA['customer_message']},
+            HTTP_REFERER=reverse('goods')
+        )
+
+        self.check_response()
+        self.check_objects()
+
+    @patch('app_ecommerce.views.construct_message', new=mock_construct_message)
+    @patch('app_ecommerce.views.send_telegram_message', new=mock_send_telegram_message)
+    def test_post_invalid_data_with_new_customer(self):
+        self.response = self.client.post(
+            reverse('customer_update'),
+            data={'name': TEST_DATA['customer_name'],
+                  'phone_number': 'invalid phone number',
+                  'text': TEST_DATA['customer_message']},
+            HTTP_REFERER=reverse('goods')
+        )
+
+        assert self.response.status_code == 302
+
+        customer_form_data = self.response.client.session['customer_form_data']
+        form = CustomerForm(customer_form_data)
+
+        assert form.errors
+
+        assert Customer.objects.filter(session_id=self.response.client.session.session_key).exists()
+        assert not Customer.objects.filter(phone_number=TEST_DATA['customer_phone_number']).exists()
+        assert not Message.objects.filter(text=TEST_DATA['customer_message']).exists()
+        assert not Contact.objects.filter(phone_number=TEST_DATA['customer_phone_number']).exists()
+
+    def test_get_method(self):
+        response = self.client.get(reverse('order_create'))
+
+        assert response.status_code == 404
+
+
 
 
