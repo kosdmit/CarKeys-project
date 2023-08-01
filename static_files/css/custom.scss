@@ -34,7 +34,7 @@ ul.errorlist {
 	margin: 0;
 }
 
-.fit-cover {
+.fit-cover, .modal-content img.goods-image{
 	object-fit: cover;
 	object-position: center;
 	width: 100%;
