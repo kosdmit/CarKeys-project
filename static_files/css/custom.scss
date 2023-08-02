@@ -26,7 +26,7 @@
 }
 
 .bg-lighten-primary {
-	background: lighten($theme-color-primary, 35%);
+	background: $secondary;
 	color: $theme-color-primary;
 }
 
@@ -49,8 +49,11 @@ ul.errorlist {
 	filter: grayscale(100%);
 }
 
-.btn-link {
-	&:hover {
-		color: white;
-	}
+button.btn-link:hover {
+	color: white;
+}
+
+h1, h2 {
+	font-family: "Segoe UI", Nunito, sans-serif;
+
 }

@@ -1,11 +1,11 @@
 /*************************** Theme Colours****************************/
 // Define theme colour scheme
-$theme-color-primary: #47b0df;
-$theme-color-secondary: #71c853;
+$theme-color-primary: #004868;
+$theme-color-secondary: #DFF1F9;
 
 $theme-text-color-primary: #212B35;
 $theme-text-color-secondary: lighten($theme-text-color-primary, 25%);
-$theme-text-color-light: lighten($theme-text-color-primary, 40%);
+$theme-text-color-light: $theme-color-primary;
 
 $theme-bg-light: #EFF2F5;
 $theme-bg-dark: $theme-color-primary;
@@ -41,11 +41,11 @@ $gray-900: $theme-text-color-primary;
 
 /* Override BS5 sass color */
 $primary: $theme-color-primary;
-$secondary: $theme-text-color-secondary;
+$secondary: $theme-color-secondary;
 
 /* Custom overrides BS5 variables */
-$accordion-button-active-bg: lighten($theme-color-primary, 35%);
-$link-color: $secondary;
+$accordion-button-active-bg: $secondary;
+$link-color: $primary;
 $link-decoration: none;
 
 /*************************** Import Bootstrap  *****************************/

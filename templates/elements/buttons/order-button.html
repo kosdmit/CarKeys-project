@@ -1,17 +1,17 @@
-<button type="button" class="btn me-2 {% if is_primary %}btn-primary{% else %}btn-sm btn-secondary{% endif %} order-button"
+<button type="button" class="btn me-2 btn-primary {% if not is_primary %}btn-sm {% endif %} order-button"
         data-obj-id="{{ obj.pk }}" data-obj-type="{{ obj.get_class_name }}"
         {% if obj.pk|slugify in request.session.ordered_goods %}style="display: none;"{% endif %}
         id="order-button-{% if in_modal %}modal-{% endif %}{{ obj.pk }}">
   Заказать
 </button>
-<button class="btn me-2 {% if is_primary %}btn-primary{% else %}btn-sm btn-secondary{% endif %} text-white"
+<button class="btn me-2 btn-primary {% if not is_primary %}btn-sm {% endif %} text-white"
         type="button" disabled style="display: none;"
         id="process-button-{% if in_modal %}modal-{% endif %}{{ obj.pk }}">
   <span class="spinner-border spinner-border-sm text-white" role="status" aria-hidden="true"></span>
   Отправка...
 </button>
 <span data-bs-toggle="modal" data-bs-target="#get-contacts-modal">
-  <button class="btn me-2 {% if is_primary %}btn-primary{% else %}btn-sm btn-secondary{% endif %} text-white"
+  <button class="btn me-2 btn-primary {% if not is_primary %}btn-sm {% endif %} text-white"
           {% if not obj.pk|slugify in request.session.ordered_goods %}style="display: none;"{% endif %}
           data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Заявка отправлена. Нажмите чтобы проверить контактную информацию."
           data-bs-custom-class="custom-tooltip" type="button"

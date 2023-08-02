@@ -61,8 +61,8 @@ a.more-link {
 	color: #fff;
 	&:hover, &:focus {
 		color: #fff;
-		background: darken($theme-color-primary, 15%);
-		border-color: darken($theme-color-primary, 15%);
+		background: lighten($theme-color-primary, 7%);
+		border-color: lighten($theme-color-primary, 7%);
 	}
 }
 
@@ -177,7 +177,7 @@ a.more-link {
 	    top: 3px;
 	    .alt {
 		    font-size: 1rem;
-		    background: lighten($theme-color-primary, 35%);
+		    background: $secondary;
 		    color: $theme-color-primary;
 		    padding: 2px 4px;
 		    position: relative;
