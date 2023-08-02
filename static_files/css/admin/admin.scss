@@ -33,7 +33,7 @@ $twitter-color: #1DA1F2;
 html[data-theme="light"],
 :root {
     --primary: #{$theme-color-primary};
-    --secondary: #{darken($theme-color-primary, 20%)};
+    --secondary: #{lighten($theme-color-primary, 7%)};
     --accent: #f5dd5d;
     --primary-fg: #fff;
 
