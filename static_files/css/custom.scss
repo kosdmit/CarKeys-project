@@ -17,6 +17,14 @@
 	}
 }
 
+.main-page-cards-list {
+	@media (992px <= width <= 1400px) {
+		:nth-child(4) {
+			display: none;
+		}
+	}
+}
+
 .badge.goods-available {
 	height: 20px;
 }

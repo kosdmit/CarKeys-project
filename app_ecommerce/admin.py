@@ -6,6 +6,7 @@ from app_ecommerce.models import Goods, Category, Parameter, Customer, Order, \
 
 
 # TODO: add action for change status for order sets
+# TODO: fix image cover for empty image field in admin panel
 
 
 class BaseAdminMixin:

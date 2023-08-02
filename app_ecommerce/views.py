@@ -15,7 +15,7 @@ from carkeys_project.common_functions import remove_parameters_from_url
 class GoodsListView(AddPriceListDataMixin, AddCustomerFormMixin, ListView):
     template_name = 'app_ecomerce/goods.html'
     model = Goods
-    paginate_by = 9
+    paginate_by = 12
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -1,7 +1,6 @@
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
+<div class="{% if url_name == 'main' %}main-page-cards-list {% endif %}cards-list row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
   {% for goods in page_obj %}
     {% include 'app_landing/elements/ecommerce-item.html' %}
-    {% include 'blocks/modals/detail-view-modal.html' %}
   {% endfor %}
   {% if page_obj|length == 0 %}
     <p class="my-5">В этой категории пока нет доступных товаров.
