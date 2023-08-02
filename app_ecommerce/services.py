@@ -83,7 +83,7 @@ def construct_message(request, obj=None):
 def send_telegram_message(message_text):
     bot_token = os.environ['TELEGRAM_ADMIN_BOT_TOKEN']
     chat_id = TELEGRAM_ADMIN_CHAT_ID
-    send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&parse_mode=Markdown&text={message_text}'
+    send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={message_text}'
     response = requests.get(send_text)
 
     return response.json()
