@@ -48,3 +48,9 @@ ul.errorlist {
 .auto-brand-logo {
 	filter: grayscale(100%);
 }
+
+.btn-link {
+	&:hover {
+		color: white;
+	}
+}

@@ -45,6 +45,8 @@ $secondary: $theme-text-color-secondary;
 
 /* Custom overrides BS5 variables */
 $accordion-button-active-bg: lighten($theme-color-primary, 35%);
+$link-color: $secondary;
+$link-decoration: none;
 
 /*************************** Import Bootstrap  *****************************/
 @import "../../bootstrap-5.3.0/scss/bootstrap";
