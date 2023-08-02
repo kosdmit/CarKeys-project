@@ -13,7 +13,7 @@
     </div>
     <div class="card-footer d-block d-sm-flex d-md-block">
       {% include 'app_ecomerce/elements/price.html' %}
-      <div class="buttons d-flex justify-content-center mt-3 mt-sm-0 mt-md-3">
+      <div class="buttons d-flex justify-content-center mt-3 mt-sm-0 mt-md-3 ms-auto">
         {% include 'elements/buttons/order-button.html' with obj=goods %}
         <button type="button" class="btn btn-link btn-sm btn-outline-primary"
                 data-bs-toggle="modal" data-bs-target="#detail-view-modal-{{ goods.pk }}">

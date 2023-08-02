@@ -1,25 +1,46 @@
 {% load static %}
 
-<header class="header">
+<header class="header bg-primary">
 
   <div class="branding">
 
     <div class="container position-relative">
 
-      <nav class="navbar navbar-expand-lg">
+      <nav class="navbar navbar-expand-lg justify-content-between flex-column flex-lg-row">
         <h1 class="site-logo">
           <a class="navbar-brand" href="/">
-            <i class="fa-solid fa-key"></i>
-            <span class="logo-text">CarKey <span class="alt rounded">Самара</span></span>
+            <i class="fa-solid fa-key text-white"></i>
+            <span class="logo-text text-white">CarKey <span class="alt rounded">Самара</span></span>
           </a>
         </h1>
-        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="{% url 'main' %}" class="nav-link px-2">Главная</a></li>
-          <li><a href="{% url 'goods' %}" class="nav-link px-2">Каталог</a></li>
-          <li><a href="#price-list-modal" data-bs-toggle="modal" class="nav-link px-2">Прайс-лист</a></li>
-          <li><a href="#schedule-modal" data-bs-toggle="modal" class="nav-link px-2">График работы</a></li>
-          <li><a href="#about-modal" data-bs-toggle="modal" class="nav-link px-2">О нас</a></li>
+        <ul class="nav col-12 col-md-auto justify-content-center">
+          <li><a href="{% url 'main' %}" class="nav-link px-2 text-white">Главная</a></li>
+          <li><a href="{% url 'goods' %}" class="nav-link px-2 text-white">Каталог</a></li>
+          <li><a href="#price-list-modal" data-bs-toggle="modal" class="nav-link px-2 text-white">Прайс-лист</a></li>
+          <li>
+            <div class="dropdown">
+              <a class="dropdown-toggle text-white nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                О нас
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="#schedule-modal" data-bs-toggle="modal" class="dropdown-item">График работы</a></li>
+                <li><a href="#about-modal" data-bs-toggle="modal" class="dropdown-item">Информация и гарантия</a></li>
+              </ul>
+            </div>
+          </li>
+
+
         </ul>
+        <div class="d-lg-flex gap-3 align-items-center d-none">
+          {% include 'elements/buttons/social_buttons.html' %}
+          <div class="d-flex flex-column align-items-end">
+            <a class="fs-5 text-white fw-bold"
+               href="tel:+79377976492" {% if target %}target="{{ target }}"{% endif %}>
+              +7 (937) 797-64-92
+            </a>
+            <p class="text-white m-0">Пн-Вс 9:00-21:00</p>
+          </div>
+        </div>
 
       </nav>
 
