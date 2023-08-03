@@ -3,7 +3,7 @@
 
 {% block content %}
   {% include 'blocks/page-title.html' with text='Каталог'%}
-  {% include 'app_ecomerce/blocks/goods-list-nav-bar.html' %}
+  {% include 'app_ecomerce/blocks/goods-list-nav-bar.html' with url_name='goods' %}
   {% include 'app_ecomerce/blocks/cards-list-section.html' %}
   {% include 'blocks/hero-section-content.html' with url_name='goods' %}
 {% endblock %}
