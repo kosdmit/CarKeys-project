@@ -17,6 +17,9 @@ from app_ecommerce.tests.mocks import mock_construct_message, \
 from app_ecommerce.views import GoodsListView
 
 
+# TODO: add search for goods
+
+
 # Create your tests here.
 @pytest.mark.django_db
 class TestGoodsListView(CreateTestObjectsMixin):
