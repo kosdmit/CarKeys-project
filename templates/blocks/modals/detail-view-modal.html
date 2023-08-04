@@ -10,7 +10,9 @@
 {% endblock %}
 
 {% block modal-header %}
-  <h1 class="modal-title fs-5" id="">{{ goods.title }}</h1>
+  <h1 class="modal-title goods-name fs-5" id="" data-goods-pk="{{ goods.pk }}">
+    {{ goods.title }}
+  </h1>
 {% endblock %}
 
 {% block modal-body %}

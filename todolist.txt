@@ -1,1 +1,2 @@
 # TODO: replace id of items in URL to slugs
+# TODO: add cancel order button for customer

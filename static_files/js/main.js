@@ -23,6 +23,9 @@ function getCookie(name) {
 // Get the CSRF token from the cookie
 const csrftoken = getCookie('csrftoken');
 
+// Ya metrica E-commerce
+window.dataLayer = window.dataLayer || [];
+
 
 // Buy button for goods
 // TODO: optimize this function
@@ -50,6 +53,15 @@ $("button.order-button").each(function () {
     orderButtonModal.hide()
     processingButton.show()
     processingButtonModal.show()
+
+    let objType = orderButton.data('obj-type')
+    if (objType === 'Goods') {
+      pushAddGoodsData(objId);
+    } else if (objType === 'Service') {
+      pushAddServiceData(objId)
+    }
+
+
     $.ajax({
       type: 'POST',
       headers: {'X-CSRFToken': csrftoken},
@@ -98,6 +110,8 @@ window.addEventListener('load', function() {
       modalDom.classList.add('fade')
     }, 1000);
 
+    checkGoodsDetailViewOpened()
+
   }
 });
 
@@ -114,6 +128,8 @@ for (let i = 0 ; i < modals.length; i++) {
     let urlParams = new URLSearchParams(window.location.search);
     if (!urlParams.has('modal_id')) {
       addUrlParam('modal_id', modals[i].getAttribute('id'))
+
+      checkGoodsDetailViewOpened()
     }
   })
 }
@@ -139,3 +155,102 @@ $('#success-modal button[data-bs-dismiss="modal"]').click(function () {
   document.body.removeChild(backdrop[0]);  // removes the modal backdrop
   console.log('Try to close modal')
 })
+
+
+function checkGoodsDetailViewOpened() {
+  let urlParams = new URLSearchParams(window.location.search);
+  let paramValue = urlParams.get('modal_id');
+  if (paramValue && paramValue.includes('detail-view-modal')) {
+      let modal = $('#' + paramValue)
+        pushDetailViewGoodsData(modal)
+    }
+}
+
+function pushDetailViewGoodsData(modal) {
+  dataLayer.push({
+    "ecommerce": {
+        "currencyCode": "RUB",
+        "detail": {
+            "products": [
+                {
+                    "id": modal.find('.goods-name').data('goods-pk'),
+                    "name" : modal.find('.goods-name').text().trim(),
+                    "price": modal.find('.goods-price').data('goods-price'),
+                    "category": modal.find('.goods-category').data('goods-category'),
+                }
+            ]
+        }
+    }
+  });
+  console.log(dataLayer)
+}
+
+function pushDetailViewServiceData(target) {
+  let accordionItemID = target.id.replace('body', 'item')
+  let accordionItem = $('#' + accordionItemID)
+  dataLayer.push({
+    "ecommerce": {
+        "currencyCode": "RUB",
+        "detail": {
+            "products": [
+                {
+                    "id": accordionItem.find('.service-name').data('service-pk'),
+                    "name" : accordionItem.find('.service-name').text().trim(),
+                    "price": accordionItem.find('.service-price').data('service-price'),
+                    "category": 'Service',
+                }
+            ]
+        }
+    }
+  });
+  console.log(dataLayer)
+}
+
+
+function pushAddGoodsData(objId) {
+  let modal = $('#detail-view-modal-' + objId)
+  dataLayer.push({
+    "ecommerce": {
+      "currencyCode": "RUB",
+      "add": {
+        "products": [
+          {
+            "id": modal.find('.goods-name').data('goods-pk'),
+            "name": modal.find('.goods-name').text().trim(),
+            "price": modal.find('.goods-price').data('goods-price'),
+            "category": modal.find('.goods-category').data('goods-category'),
+            "quantity": 1
+          }
+        ]
+      }
+    }
+  });
+  console.log(dataLayer)
+}
+
+function pushAddServiceData(objId) {
+  let accordionItem = $('#accordion-item-' + objId)
+  dataLayer.push({
+    "ecommerce": {
+      "currencyCode": "RUB",
+      "add": {
+        "products": [
+          {
+            "id": accordionItem.find('.service-name').data('service-pk'),
+            "name": accordionItem.find('.service-name').text().trim(),
+            "price": accordionItem.find('.service-price').data('service-price'),
+            "category": 'Service',
+            "quantity": 1
+          }
+        ]
+      }
+    }
+  });
+  console.log(dataLayer)
+}
+
+
+$('#price-list-accordion').on('shown.bs.collapse', function (event) {
+  var target = event.target;  // the panel that was shown
+  pushDetailViewServiceData(target)
+});

@@ -2,7 +2,9 @@
 
 {% block content %}
 
-  <p class="m-0 me-3">Категория:</p>
+  <p class="m-0 me-3 goods-category"  data-goods-category="{{ goods.parent }}">
+    Категория:
+  </p>
   {% if goods.parent.parent %}
     <li class="breadcrumb-item">
       <a class="link-body-emphasis fw-semibold text-decoration-none"

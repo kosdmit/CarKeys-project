@@ -3,21 +3,25 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header justify-content-start">
-        <h1 class="modal-title fs-5" id="">Прайс-лист</h1>
+        <h2 class="modal-title fs-5" id="">Прайс-лист</h2>
       </div>
       <div class="modal-body p-0">
-        <div class="accordion accordion-flush" id="accordionExample">
+        <div class="accordion accordion-flush" id="price-list-accordion">
 
           {% for service in price_list %}
-            <div class="accordion-item">
-              <h2 class="accordion-header">
+            <div class="accordion-item" id="accordion-item-{{ service.pk }}">
+              <h3 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-body-{{ service.pk }}" aria-expanded="true" aria-controls="collapseOne">
                   <div class="d-lg-flex">
-                    <p class="m-0 me-lg-2">{{ service.title }}</p>
-                    <p class="badge bg-lighten-primary m-0">{% if service.price_prefix %}от {% endif %}{{ service.price }} ₽</p>
+                    <p class="m-0 me-lg-2 service-name" data-service-pk="{{ service.pk }}">
+                      {{ service.title }}
+                    </p>
+                    <p class="badge bg-lighten-primary m-0 service-price" data-service-price="{{ service.price }}">
+                      {% if service.price_prefix %}от {% endif %}{{ service.price }} ₽
+                    </p>
                   </div>
                 </button>
-              </h2>
+              </h3>
               <div id="accordion-body-{{ service.pk }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <p>{{ service.description }}</p>
