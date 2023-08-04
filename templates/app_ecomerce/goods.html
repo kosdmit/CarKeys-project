@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}CarKey - Каталог автомобильных ключей в наличии{% endblock %}
+
 {% block content %}
   {% include 'blocks/page-title.html' with text='Каталог'%}
   {% include 'app_ecomerce/blocks/goods-list-nav-bar.html' with url_name='goods' %}
