@@ -9,14 +9,16 @@
         <div class="accordion accordion-flush" id="price-list-accordion">
 
           {% for service in price_list %}
-            <div class="accordion-item" id="accordion-item-{{ service.pk }}">
+            <div class="accordion-item" id="accordion-item-{{ service.pk }}"
+                 itemprop="makesOffer" itemscope itemtype="http://schema.org/Offer">
               <h3 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-body-{{ service.pk }}" aria-expanded="true" aria-controls="collapseOne">
                   <div class="d-lg-flex">
-                    <p class="m-0 me-lg-2 service-name" data-service-pk="{{ service.pk }}">
+                    <p class="m-0 me-lg-2 service-name" data-service-pk="{{ service.pk }}" itemprop="name">
                       {{ service.title }}
                     </p>
-                    <p class="badge bg-lighten-primary m-0 service-price" data-service-price="{{ service.price }}">
+                    <p class="badge bg-lighten-primary m-0 service-price" data-service-price="{{ service.price }}"
+                       itemprop="price">
                       {% if service.price_prefix %}от {% endif %}{{ service.price }} ₽
                     </p>
                   </div>
@@ -24,7 +26,7 @@
               </h3>
               <div id="accordion-body-{{ service.pk }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  <p>{{ service.description }}</p>
+                  <p itemprop="description">{{ service.description }}</p>
                   <div class="d-flex justify-content-end">
                     {% include 'elements/buttons/order-button.html' with obj=service is_primary='True' %}
                   </div>

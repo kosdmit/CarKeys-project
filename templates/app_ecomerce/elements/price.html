@@ -1,7 +1,12 @@
-<span class="fs-4 me-1 goods-price" data-goods-price="{{ goods.price }}">
-  {% if goods.price_prefix %}<span class="fs-5 me-1">от</span>{% endif %}
-  {{ goods.price }} ₽
-</span>
-{% if goods.count > 0 %}
-  <span class="badge goods-available text-bg-secondary rounded-pill m-0 text-light align-self-center">В наличии</span>
-{% endif %}
+<div class="d-flex align-items-center">
+  <span class="fs-4 me-1 goods-price" data-goods-price="{{ goods.price }}" itemprop="price">
+    {% if goods.price_prefix %}<span class="fs-5 me-1">от</span>{% endif %}
+    {{ goods.price }} ₽
+  </span>
+  {% if goods.count > 0 %}
+    <span class="badge goods-available text-bg-secondary rounded-pill m-0 text-light align-self-center"
+        itemprop="availability">
+      В наличии
+    </span>
+  {% endif %}
+</div>

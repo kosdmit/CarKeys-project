@@ -1,17 +1,19 @@
-<div class="col">
+<div class="col" itemscope itemtype="https://schema.org/Product">
   <div class="card shadow-sm">
     {% if goods.image %}
-      <img src="{{ goods.image.url }}" class="card-img-top fit-cover" alt="goods image">
+      <img src="{{ goods.image.url }}" class="card-img-top fit-cover" alt="goods image"
+          itemprop="image">
     {% else %}
       <div class="card-img-top fit-cover empty-cover d-flex justify-content-center">
         <p class="text-white align-self-center">Изображение отсутствует</p>
       </div>
     {% endif %}
     <div class="card-body">
-      <h5 class="card-title">{{ goods.title }}</h5>
-      <p class="card-text">{{ goods.description }}</p>
+      <h5 class="card-title" itemprop="name">{{ goods.title }}</h5>
+      <p class="card-text" itemprop="description">{{ goods.description }}</p>
     </div>
-    <div class="card-footer d-block d-sm-flex d-md-block">
+    <div class="card-footer d-block d-sm-flex d-md-block"
+         itemprop="offers" itemscope itemtype="https://schema.org/Offer">
       {% include 'app_ecomerce/elements/price.html' %}
       <div class="buttons d-flex justify-content-center mt-3 mt-sm-0 mt-md-3 ms-auto">
         {% include 'elements/buttons/order-button.html' with obj=goods %}

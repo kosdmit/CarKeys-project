@@ -8,7 +8,7 @@
   {% if goods.parent.parent %}
     <li class="breadcrumb-item">
       <a class="link-body-emphasis fw-semibold text-decoration-none"
-         href="{% url 'goods' %}?category={{ goods.parent.parent.slug }}">
+         href="{% url 'goods' %}?category={{ goods.parent.parent.slug }}" itemprop="category">
         {{ goods.parent.parent.title }}
       </a>
     </li>

@@ -10,7 +10,10 @@
         <h1 class="site-logo">
           <a class="navbar-brand" href="/">
             <i class="fa-solid fa-key text-white"></i>
-            <span class="logo-text text-white">CarKey <span class="alt rounded">Самара</span></span>
+            <span class="logo-text text-white">
+              <span itemprop="brand">CarKey</span>
+              <span class="alt rounded" itemprop="areaServed">Самара</span>
+            </span>
           </a>
         </h1>
         <ul class="nav col-12 col-md-auto justify-content-center">
@@ -38,7 +41,9 @@
                href="tel:+79377976492" {% if target %}target="{{ target }}"{% endif %}>
               +7 (937) 797-64-92
             </a>
-            <p class="text-white m-0">Пн-Вс 9:00-21:00</p>
+            <time class="text-white m-0" itemprop="openingHours" datetime="Mo-Su 09:00-21:00">
+              Пн-Вс 9:00-21:00
+            </time>
           </div>
         </div>
 

@@ -1,4 +1,4 @@
-<div class="container {% if url_name == 'goods' %}my-4{% else %}p-0 my-3{% endif %}">
+<div class="container {% if not modal %}my-4{% else %}p-0 my-3{% endif %}">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-chevron p-3 theme-bg-primary rounded-3 align-items-center m-0">
       {% block content %}{% endblock %}

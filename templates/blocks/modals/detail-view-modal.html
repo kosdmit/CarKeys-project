@@ -5,32 +5,35 @@
 
 {% block title-image %}
   {% if goods.image %}
-    <img src="{{ goods.image.url }}" alt="goods image" class="rounded-top-2 goods-image">
+    <img src="{{ goods.image.url }}" alt="goods image" class="rounded-top-2 goods-image" itemprop="image">
   {% endif %}
 {% endblock %}
 
 {% block modal-header %}
-  <h1 class="modal-title goods-name fs-5" id="" data-goods-pk="{{ goods.pk }}">
+  <h1 class="modal-title goods-name fs-5" id="" data-goods-pk="{{ goods.pk }}" itemprop="name">
     {{ goods.title }}
   </h1>
 {% endblock %}
 
 {% block modal-body %}
-  <p>{{ goods.description }}</p>
+  <p itemprop="description">{{ goods.description }}</p>
   {% for param in goods.parameter_set.all %}
-    <div class="row">
+    <div class="row" itemprop="description">
       <dt class="col-sm-6">{{ param.title }}</dt>
       <dd class="col-sm-6">{{ param.value }}</dd>
     </div>
   {% endfor %}
   {% if goods.parent %}
-    {% include 'app_ecomerce/blocks/detail-view-modal-nav-bar.html' %}
+    {% include 'app_ecomerce/blocks/detail-view-modal-nav-bar.html' with modal='True' %}
   {% endif %}
 {% endblock %}
 
 {% block modal-footer %}
-  {% include 'app_ecomerce/elements/price.html' %}
-  <div class="buttons d-flex justify-content-center mt-3 mt-sm-0 ms-auto">
+  <div class="d-flex align-items-center"
+       itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+    {% include 'app_ecomerce/elements/price.html' %}
+  </div>
+  <div class="buttons d-flex justify-content-center m-0 mt-3 mt-sm-0 ms-auto">
     {% include 'elements/buttons/close-button.html' %}
     {% include 'elements/buttons/order-button.html' with is_primary='True' in_modal='True' obj=goods %}
   </div>
