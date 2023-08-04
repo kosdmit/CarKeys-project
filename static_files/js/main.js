@@ -23,6 +23,7 @@ function getCookie(name) {
 // Get the CSRF token from the cookie
 const csrftoken = getCookie('csrftoken');
 
+
 // Ya metrica E-commerce
 window.dataLayer = window.dataLayer || [];
 
@@ -157,6 +158,7 @@ $('#success-modal button[data-bs-dismiss="modal"]').click(function () {
 })
 
 
+// Ya e-commerce analytics supporting
 function checkGoodsDetailViewOpened() {
   let urlParams = new URLSearchParams(window.location.search);
   let paramValue = urlParams.get('modal_id');
@@ -206,7 +208,6 @@ function pushDetailViewServiceData(target) {
   console.log(dataLayer)
 }
 
-
 function pushAddGoodsData(objId) {
   let modal = $('#detail-view-modal-' + objId)
   dataLayer.push({
@@ -248,7 +249,6 @@ function pushAddServiceData(objId) {
   });
   console.log(dataLayer)
 }
-
 
 $('#price-list-accordion').on('shown.bs.collapse', function (event) {
   var target = event.target;  // the panel that was shown
