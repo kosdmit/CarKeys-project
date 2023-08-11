@@ -41,18 +41,22 @@ class GoodsListView(AddPriceListDataMixin, AddCustomerFormMixin, ListView):
 
         # Get breadcrumbs
         breadcrumbs = []
+        title = ''
         if self.category_object and self.category_object.parent:
             breadcrumbs.append([
                 self.category_object.parent.title,
                 reverse_lazy('goods') + '?category=' + self.category_object.parent.slug
             ])
+            title += ' ' + self.category_object.parent.title
 
         if self.category_object:
             breadcrumbs.append([self.category_object.title, None])
+            title += ' ' + self.category_object.title
         else:
             breadcrumbs.append([_('All categories'), None])
 
         context['breadcrumbs'] = breadcrumbs
+        context['title'] = title
 
 
         return context

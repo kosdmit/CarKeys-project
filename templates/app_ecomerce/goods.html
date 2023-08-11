@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}CarKey - Каталог автомобильных ключей в наличии{% endblock %}
+{% block title %}
+  CarKey -
+  {% if title %}Категория - {{ title }}
+  {% else %}Каталог автомобильных ключей в наличии{% endif %}
+{% endblock %}
 
 {% block content %}
   {% include 'blocks/page-title.html' with text='Каталог'%}

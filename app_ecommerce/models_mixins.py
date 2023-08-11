@@ -1,10 +1,10 @@
-import uuid
-from io import BytesIO
 import sys
+import uuid
+from datetime import datetime
+from io import BytesIO
+
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
-
-from datetime import datetime
 
 
 class CompressImageBeforeSaveMixin:
