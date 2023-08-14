@@ -1,3 +1,6 @@
+let startTitleText = $('head title').text()
+let startDescriptionText = $('head [name="description"]').attr('content').trim().replace(/[\n\r\t\s+]/g, " ").replace(/\/|\.\s+/g, ". ")
+
 // Enable bootstrap tooltips
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
@@ -147,8 +150,22 @@ for (let i = 0 ; i < modals.length; i++) {
     url.searchParams.delete('modal_id')
     url.searchParams.delete('service_id')
     window.history.replaceState({}, document.title, url.toString());
+
+    $('head title').text(startTitleText)
+    $(' head [name="description"]').attr('content', startDescriptionText)
+
   })
   modals[i].addEventListener('show.bs.modal', event => {
+    var target = event.target;
+    $('head title').text('CarKey Самара - ' + $(target).find('.modal-title').text().trim())
+    let itemProp = $(target).find([itemprop="description"])
+    if (itemProp) {
+      $('head [name="description"]').attr('content',
+        'CarKey Самара - ' +
+          $(target).find('.modal-title').text().trim() + ' - ' +
+          $(target).find('[itemprop="description"]').text().trim().replace(/[\n\r\t]|\s+/g, " ").replace(/\.|\.\s+/g, ". "))
+    }
+
     let urlParams = new URLSearchParams(window.location.search);
     if (!urlParams.has('modal_id')) {
       addUrlParam('modal_id', modals[i].getAttribute('id'))
@@ -276,8 +293,7 @@ function pushAddServiceData(objId) {
 
 
 // Change page title and description then service is opened
-let startTitleText = $('head title').text()
-let startDescriptionText = $('head [name="description"]').attr('content')
+
 $('#price-list-accordion').on('shown.bs.collapse', function (event) {
   var target = event.target;  // the panel that was shown
   pushDetailViewServiceData(target)
@@ -301,6 +317,9 @@ $('#price-list-accordion').on('hide.bs.collapse', event => {
     let url = new URL(window.location.href);
     url.searchParams.delete('service_id');
     window.history.replaceState({}, document.title, url.toString());
-    $('head title').text(startTitleText)
-    $(' head [name="description"]').attr('content', startDescriptionText)
+    $('head title').text('CarKey Самара - ' + $('#price-list').find('.modal-title').text().trim())
+    $('head [name="description"]').attr('content',
+        'CarKey Самара - ' +
+          $('#price-list').find('.modal-title').text().trim() + ' - ' +
+          $('#price-list').find('[itemprop="description"]').text().trim().replace(/[\n\r\t]|\s+/g, " ").replace(/\.|\.\s+/g, ". "))
   })
