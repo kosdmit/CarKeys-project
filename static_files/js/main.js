@@ -31,7 +31,7 @@ window.dataLayer = window.dataLayer || [];
 // Buy button for goods
 // TODO: optimize this function
 let priceListModal = new bootstrap.Modal(
-  document.getElementById('price-list-modal')
+  document.getElementById('price-list')
 );
 $("button.order-button").each(function () {
   let objId = $(this).data('obj-id');
@@ -117,12 +117,35 @@ window.addEventListener('load', function() {
 });
 
 
+// Open service if URL param exists
+window.addEventListener('load', function() {
+  let urlParams = new URLSearchParams(window.location.search);
+  let serviceId = urlParams.get('service_id');
+
+  if (serviceId) {
+    let accordionItem = new bootstrap.Collapse(document.getElementById(serviceId));
+    let modalDom = document.getElementById(serviceId);
+    modalDom.classList.remove('fade')
+    accordionItem.show();
+    setTimeout(function() {
+      modalDom.classList.add('fade')
+    }, 1000);
+
+    // TODO: check ya-commerce for Services
+    // checkGoodsDetailViewOpened()
+
+  }
+});
+
+
+
 //Clear url parameters then modals are hidden
 const modals = document.querySelectorAll('.modal')
 for (let i = 0 ; i < modals.length; i++) {
   modals[i].addEventListener('hide.bs.modal', event => {
     let url = new URL(window.location.href);
     url.searchParams.delete('modal_id')
+    url.searchParams.delete('service_id')
     window.history.replaceState({}, document.title, url.toString());
   })
   modals[i].addEventListener('show.bs.modal', event => {
@@ -159,6 +182,7 @@ $('#success-modal button[data-bs-dismiss="modal"]').click(function () {
 
 
 // Ya e-commerce analytics supporting
+// TODO: check post data for services
 function checkGoodsDetailViewOpened() {
   let urlParams = new URLSearchParams(window.location.search);
   let paramValue = urlParams.get('modal_id');
@@ -250,7 +274,33 @@ function pushAddServiceData(objId) {
   console.log(dataLayer)
 }
 
+
+// Change page title and description then service is opened
+let startTitleText = $('head title').text()
+let startDescriptionText = $('head [name="description"]').attr('content')
 $('#price-list-accordion').on('shown.bs.collapse', function (event) {
   var target = event.target;  // the panel that was shown
   pushDetailViewServiceData(target)
+  $('head title').text('CarKey - ' + $(target).parent().find('.service-name').text().trim() + ' в Самаре и области')
+  $('head [name="description"]').attr('content',
+      'CarKey Самара - ' + $(target).parent().find('.service-name').text().trim() + ' - ' + $(target).find('[itemprop="description"]').text().trim())
+
+  let urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('service_id')) {
+    var params = new URLSearchParams( window.location.search );
+    params.set( 'service_id', target.getAttribute('id') );
+    var newUrl = window.location.origin + window.location.pathname + '?' + params.toString();
+    window.history.replaceState( null, null, newUrl );
+  } else {
+    addUrlParam('service_id', target.getAttribute('id'))
+  }
+
 });
+
+$('#price-list-accordion').on('hide.bs.collapse', event => {
+    let url = new URL(window.location.href);
+    url.searchParams.delete('service_id');
+    window.history.replaceState({}, document.title, url.toString());
+    $('head title').text(startTitleText)
+    $(' head [name="description"]').attr('content', startDescriptionText)
+  })
