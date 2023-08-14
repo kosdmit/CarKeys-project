@@ -1,5 +1,6 @@
 let startTitleText = $('head title').text()
 let startDescriptionText = $('head [name="description"]').attr('content').trim().replace(/[\n\r\t\s+]/g, " ").replace(/\/|\.\s+/g, ". ")
+let startKeywordsText = $('head [name="keywords"]').text()
 
 // Enable bootstrap tooltips
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -153,11 +154,13 @@ for (let i = 0 ; i < modals.length; i++) {
 
     $('head title').text(startTitleText)
     $(' head [name="description"]').attr('content', startDescriptionText)
+    $(' head [name="keywords"]').attr('content', startKeywordsText)
 
   })
   modals[i].addEventListener('show.bs.modal', event => {
     var target = event.target;
     $('head title').text('CarKey Самара - ' + $(target).find('.modal-title').text().trim())
+    $('head [name="keywords"]').attr('content', '')
     let itemProp = $(target).find([itemprop="description"])
     if (itemProp) {
       $('head [name="description"]').attr('content',
