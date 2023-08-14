@@ -1,6 +1,6 @@
 let startTitleText = $('head title').text()
 let startDescriptionText = $('head [name="description"]').attr('content').trim().replace(/[\n\r\t\s+]/g, " ").replace(/\/|\.\s+/g, ". ")
-let startKeywordsText = $('head [name="keywords"]').text()
+let startKeywordsText = $('head [name="keywords"]').attr('content').trim().replace(/[\n\r\t\s+]/g, " ")
 
 // Enable bootstrap tooltips
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -153,8 +153,8 @@ for (let i = 0 ; i < modals.length; i++) {
     window.history.replaceState({}, document.title, url.toString());
 
     $('head title').text(startTitleText)
-    $(' head [name="description"]').attr('content', startDescriptionText)
-    $(' head [name="keywords"]').attr('content', startKeywordsText)
+    $('head [name="description"]').attr('content', startDescriptionText)
+    $('head [name="keywords"]').attr('content', startKeywordsText)
 
   })
   modals[i].addEventListener('show.bs.modal', event => {
