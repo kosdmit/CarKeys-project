@@ -219,6 +219,7 @@ class Order(Base):
 
 class Service(Base):
     title = models.CharField(max_length=150, verbose_name=_('title'))
+    slug = AutoSlugField(populate_from='title', unique=True, blank=True, null=True)
     description = models.TextField(verbose_name=_('description'))
     price = models.IntegerField(verbose_name=_('price'))
     price_prefix = models.BooleanField(default=False, verbose_name=_('price prefix'))

@@ -1,3 +1,3 @@
 User-agent: *
 Disallow: /admin/
-Sitemap: https://www.carkeysamara.ru/static/robots/sitemap.xml
+Sitemap: https://www.carkeysamara.ru/sitemap.xml

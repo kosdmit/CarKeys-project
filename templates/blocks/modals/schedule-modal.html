@@ -1,6 +1,6 @@
 {% extends 'blocks/modals/modal-base.html' %}
 
-{% block modal-id %}schedule-modal{% endblock %}
+{% block modal-id %}schedule{% endblock %}
 {% block modal-size %}modal-lg{% endblock %}
 {% block modal-dialog-classes %}{% endblock %}
 
@@ -10,10 +10,11 @@
 {% endblock %}
 
 {% block modal-body %}
-  <div class="row row-cols-1 row-cols-lg-2 align-items-md-center g-4 py-5 px-2">
+  <div class="row row-cols-1 row-cols-lg-2 align-items-md-center g-4 py-5 px-2"
+       itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification">
     <div class="col d-flex flex-column align-items-start gap-2">
-      <h2 class="fw-bold text-body-emphasis">Работаем по предварительной записи</h2>
-      <p class="text-body-secondary">Оставьте заявку на сайте или по телефону, чтобы согласовать время проведения работ.</p>
+      <h2 class="fw-bold text-body-emphasis" itemprop="description">Работаем по предварительной записи </h2>
+      <p class="text-body-secondary" itemprop="description">Оставьте заявку на сайте или по телефону, чтобы согласовать время проведения работ.</p>
       <button data-bs-target="#order-modal" data-bs-toggle="modal" class="btn btn-primary btn-lg">Оставить заявку</button>
     </div>
 
@@ -24,7 +25,7 @@
             <i class="fa-solid fa-chalkboard-user text-white"></i>
           </div>
           <h4 class="fw-semibold mb-0 text-body-emphasis">Прием заявок онлайн</h4>
-          <p class="text-body-secondary">Принимаем заявки на сайте круглосуточно.</p>
+          <p class="text-body-secondary" itemprop="description">Принимаем заявки на сайте круглосуточно.</p>
         </div>
 
         <div class="col d-flex flex-column gap-2">
@@ -48,7 +49,7 @@
             <i class="fa-solid fa-car-on text-white"></i>
           </div>
           <h4 class="fw-semibold mb-0 text-body-emphasis">Проведение работ</h4>
-          <p class="text-body-secondary">Работаем по гибкому графику, согласовывая время с клиентом.</p>
+          <p class="text-body-secondary" itemprop="description">Работаем по гибкому графику, согласовывая время с клиентом.</p>
         </div>
       </div>
     </div>

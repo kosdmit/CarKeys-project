@@ -46,8 +46,8 @@ class TestConstructMessage(CreateTestObjectsMixin):
 
     @staticmethod
     def check_link(order, message):
-        assert str(order.goods.pk) in message
-        assert 'modal_id=detail-view-modal-' in message
+        assert str(order.goods.slug) in message
+        assert 'modal_id=' in message
         assert reverse('goods') in message
         assert any(host in message for host in settings.ALLOWED_HOSTS)
 

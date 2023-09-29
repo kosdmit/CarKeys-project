@@ -40,7 +40,7 @@ def construct_message(request, obj=None):
     if obj:
         obj_class = type(obj)
         obj_name = 'товар' if obj_class == Goods else 'услуга'
-        link = f'https://{settings.ALLOWED_HOSTS[0]}{reverse("goods") + "?modal_id=detail-view-modal-" + str(obj.pk)}' if obj_class == Goods else ''
+        link = f'https://{settings.ALLOWED_HOSTS[0]}{reverse("goods") + "?modal_id=" + str(obj.slug)}' if obj_class == Goods else ''
         availability = f'Наличие на сайте: {obj.count} ' if obj_class == Goods else ''
 
     if obj and modal_id != 'callback-modal':

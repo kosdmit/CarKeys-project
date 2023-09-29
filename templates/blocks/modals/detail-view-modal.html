@@ -1,6 +1,6 @@
 {% extends 'blocks/modals/modal-base.html' %}
 
-{% block modal-id %}detail-view-modal-{{ goods.pk }}{% endblock %}
+{% block modal-id %}{{ goods.slug }}{% endblock %}
 {% block modal-dialog-classes %}modal-dialog-centered{% endblock %}
 
 {% block title-image %}
