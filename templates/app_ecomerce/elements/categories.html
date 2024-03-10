@@ -9,7 +9,7 @@
     <div class="accordion-item">
       <h2 class="accordion-header">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-body-{{ category.pk }}" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-          <a class="link-primary text-decoration-underline" href="{% url 'goods' %}?category={{ category.slug }}">{{ category.title }}</a>
+          <a class="link-primary" href="{% url 'goods' %}?category={{ category.slug }}">{{ category.title }}</a>
         </button>
       </h2>
       <div id="accordion-body-{{ category.pk }}" class="accordion-collapse collapse">
