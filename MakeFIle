@@ -1,0 +1,17 @@
+# Makefile for Docker Compose production commands
+
+COMPOSE_FILE := docker-compose.prod.yml
+
+.PHONY: logs status scale
+
+# View logs
+logs:
+	docker-compose -f $(COMPOSE_FILE) logs -f
+
+# Check service status
+status:
+	docker-compose -f $(COMPOSE_FILE) ps
+
+# Scale workers (example: make scale workers=3)
+scale:
+	docker-compose -f $(COMPOSE_FILE) up --scale web=$(workers) -d

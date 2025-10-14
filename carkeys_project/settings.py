@@ -24,7 +24,7 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 TELEGRAM_ADMIN_CHAT_ID = '-801091439'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True if os.environ['DJANGO_DEBUG'] == 'True' else False
+DEBUG = True if os.environ.get('DJANGO_DEBUG') == 'True' else False
 # DEBUG = False
 # SESSION_COOKIE_SECURE = not DEBUG
 
@@ -89,11 +89,11 @@ if os.environ.get('DJANGO_DATABASE') == 'postgres':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'carkeyproject_db',
-            'USER': 'carkeyproject_user',
-            'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-            'HOST': 'localhost',
-            'PORT': '5432',
+            'NAME': os.environ.get('POSTGRES_DB'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT'),
         }
     }
 elif os.environ['DJANGO_DATABASE'] == 'sqlite':

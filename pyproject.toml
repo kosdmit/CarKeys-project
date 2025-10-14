@@ -1,0 +1,23 @@
+[project]
+name = "carkeys-project"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "asgiref==3.7.2",
+    "Django==4.2.2",
+    "sqlparse==0.4.4",
+    "tzdata==2023.3",
+    "pillow==10.0.0",
+    "pytils==0.4.1",
+    "django-autoslug==1.9.9",
+    "requests==2.31.0",
+    "phonenumbers==8.13.16",
+    "django-htmlmin==0.11.0",
+    "pytest==7.4.0",
+    "pytest-django==4.5.2",
+    "mixer==7.2.2",
+    "gunicorn>=23.0.0",
+    "psycopg2>=2.9.11",
+]

@@ -4,3 +4,4 @@
 /jquery/
 /media/
 /static/
+.env.prod
