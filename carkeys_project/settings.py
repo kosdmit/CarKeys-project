@@ -25,13 +25,31 @@ TELEGRAM_ADMIN_CHAT_ID = '-801091439'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.environ.get('DJANGO_DEBUG') == 'True' else False
-# DEBUG = False
-# SESSION_COOKIE_SECURE = not DEBUG
 
 ALLOWED_HOSTS = ['carkeysamara.ru', 'www.carkeysamara.ru',
                  'carkeysamara.online', 'www.carkeysamara.online',
                  '185.14.45.230', '185.14.45.230:8001',
                  '127.0.0.1', 'localhost']
+
+# Production Security Settings
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'SAMEORIGIN'
+    
+    # CSRF trusted origins for production
+    CSRF_TRUSTED_ORIGINS = [
+        'https://carkeysamara.ru',
+        'https://www.carkeysamara.ru',
+        'https://carkeysamara.online',
+        'https://www.carkeysamara.online',
+    ]
 
 
 # Application definition

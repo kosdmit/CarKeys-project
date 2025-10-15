@@ -21,10 +21,10 @@ RUN apt-get update && apt-get install -y \
 RUN pip install uv
 
 # Copy dependency files first (for better caching)
-COPY pyproject.toml ./
+COPY pyproject.toml uv.lock ./
 
 # Install Python dependencies
-RUN uv sync
+RUN uv sync --frozen
 
 # Copy project
 COPY . .
@@ -34,3 +34,4 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
+CMD ["gunicorn"]

@@ -1,7 +1,39 @@
-/bootstrap-5.3.0/
+# Django
 /db.sqlite3
-/venv/
-/jquery/
 /media/
 /static/
+*.log
+*.pot
+*.pyc
+__pycache__/
+
+# Environment
+.env
 .env.prod
+.env.local
+
+# Virtual Environments
+/venv/
+/.venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Frontend Libraries
+/bootstrap-5.3.0/
+/jquery/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.pid
+*.seed
+*.pid.lock
