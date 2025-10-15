@@ -29,7 +29,7 @@ DEBUG = True if os.environ.get('DJANGO_DEBUG') == 'True' else False
 ALLOWED_HOSTS = ['carkeysamara.ru', 'www.carkeysamara.ru',
                  'carkeysamara.online', 'www.carkeysamara.online',
                  '185.14.45.230', '185.14.45.230:8001',
-                 '127.0.0.1', 'localhost']
+                 '127.0.0.1', 'localhost', '95.142.42.246']
 
 # Production Security Settings
 if not DEBUG:
