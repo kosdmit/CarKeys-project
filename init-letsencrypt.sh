@@ -5,7 +5,8 @@
 
 set -e
 
-domains=(carkeysamara.ru www.carkeysamara.ru carkeysamara.online www.carkeysamara.online)
+domains=(carkeysamara.ru www.carkeysamara.ru)
+# Note: Add carkeysamara.online www.carkeysamara.online when DNS is configured
 rsa_key_size=4096
 data_path="./certbot"
 email="kosdmit@hotmail.com" # Adding a valid email is strongly recommended
