@@ -43,6 +43,16 @@ echo "### Starting nginx ..."
 docker-compose -f docker-compose.prod.yml down
 # Start all services
 docker-compose -f docker-compose.prod.yml up -d
+
+echo "### Waiting for services to be ready..."
+sleep 10
+
+echo "### Testing ACME challenge path..."
+# Create a test file in the webroot
+mkdir -p "$data_path/www/.well-known/acme-challenge"
+echo "test" > "$data_path/www/.well-known/acme-challenge/test.txt"
+# Give nginx time to pick it up
+sleep 2
 echo
 
 echo "### Deleting dummy certificate for ${domains[0]} ..."
