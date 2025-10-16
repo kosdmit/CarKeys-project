@@ -1,4 +1,4 @@
-# CarKeys Project
+﻿# CarKeys Project
 
 Django-based e-commerce application for car key services.
 
@@ -18,7 +18,8 @@ uv run python manage.py runserver
 
 ### Production Deployment
 **See `DEPLOYMENT_STATUS.md` for deployment readiness report**  
-**See `DEPLOYMENT.md` for complete deployment guide**
+**See `DEPLOYMENT.md` for complete deployment guide**  
+**See `SSL_SETUP.md` for SSL certificate setup with Let's Encrypt**
 
 ```bash
 # 1. Create environment file
@@ -28,7 +29,10 @@ cp .env.prod.example .env.prod
 # 2. Build and deploy
 docker-compose -f docker-compose.prod.yml up -d
 
-# 3. Create admin user
+# 3. Setup SSL certificates (recommended)
+./init-letsencrypt.sh
+
+# 4. Create admin user
 docker-compose -f docker-compose.prod.yml exec web uv run python manage.py createsuperuser
 ```
 
@@ -43,6 +47,7 @@ docker-compose -f docker-compose.prod.yml exec web uv run python manage.py creat
 ## Documentation
 - **DEPLOYMENT_STATUS.md** - Current deployment readiness
 - **DEPLOYMENT.md** - Complete deployment guide
+- **SSL_SETUP.md** - SSL certificate setup with automatic renewal
 - **.env.prod.example** - Environment variables template
 
 ## Tech Stack
@@ -52,3 +57,4 @@ docker-compose -f docker-compose.prod.yml exec web uv run python manage.py creat
 - Nginx
 - Gunicorn
 - Docker & Docker Compose
+- Let's Encrypt / Certbot (SSL)
