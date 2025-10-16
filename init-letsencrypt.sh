@@ -38,7 +38,10 @@ docker-compose -f docker-compose.prod.yml run --rm --entrypoint "\
 echo
 
 echo "### Starting nginx ..."
-docker-compose -f docker-compose.prod.yml up --force-recreate -d nginx
+# Stop and remove existing containers to avoid conflicts
+docker-compose -f docker-compose.prod.yml down
+# Start all services
+docker-compose -f docker-compose.prod.yml up -d
 echo
 
 echo "### Deleting dummy certificate for ${domains[0]} ..."
