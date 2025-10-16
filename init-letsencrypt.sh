@@ -41,6 +41,8 @@ echo
 echo "### Starting nginx ..."
 # Stop and remove existing containers to avoid conflicts
 docker-compose -f docker-compose.prod.yml down
+# Rebuild nginx to ensure latest config
+docker-compose -f docker-compose.prod.yml build nginx
 # Start all services
 docker-compose -f docker-compose.prod.yml up -d
 
